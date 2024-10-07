@@ -32,9 +32,9 @@ class NotificationService: NotificationListenerService() {
 
             Log.d( TAG , "********** onNotificationPosted" )
             Log.d( TAG , "ID :${sbn?.id},KEY :${key}, TITLE: $title, TEXT: $text, SUB_TEXT: $subtext, PACKAGE: ${sbn?.packageName}")
-            for (k in extras?.keySet()!!){
-                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
-            }
+//            for (k in extras?.keySet()!!){
+//                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
+//            }
 
             // lọc tin nhắn nhóm
             if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {

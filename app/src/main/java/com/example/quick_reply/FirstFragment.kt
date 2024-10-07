@@ -61,13 +61,13 @@ class FirstFragment : Fragment(){
         val checkedApps = sharedPreferences.getStringSet(CHECKED_APPS_KEY, emptySet())
         val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
         val quoteReply = sharedPreferences.getBoolean(QUOTE_REPLY_KEY, false)
-        val filterRegexText = sharedPreferences.getString(FILTER_REGEX_TEXT_KEY, "^[^:]*\$")
-        val filterRegexTitle = sharedPreferences.getString(FILTER_REGEX_TITLE_KEY, "")
+//        val filterRegexText = sharedPreferences.getString(FILTER_REGEX_TEXT_KEY, "^[^:]*\$")
+//        val filterRegexTitle = sharedPreferences.getString(FILTER_REGEX_TITLE_KEY, "")
 
         binding.root.findViewById<EditText>(R.id.replyText).setText(replyText)
         binding.root.findViewById<CheckBox>(R.id.quote_reply).isChecked = quoteReply
-        binding.root.findViewById<EditText>(R.id.regex_title).setText(filterRegexTitle)
-        binding.root.findViewById<EditText>(R.id.regex_text).setText(filterRegexText)
+//        binding.root.findViewById<EditText>(R.id.regex_title).setText(filterRegexTitle)
+//        binding.root.findViewById<EditText>(R.id.regex_text).setText(filterRegexText)
 
         val packageManager = this.requireContext().packageManager
         val packages = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
@@ -76,7 +76,6 @@ class FirstFragment : Fragment(){
                 val appName = packageManager.getApplicationLabel(pkg).toString()
                 val appIcon = packageManager.getApplicationIcon(pkg.packageName)
                 val packageName = pkg.packageName
-                Log.d("tien", packageName)
                 appsList.add(AppInfo(appName, packageName, appIcon, checkedApps?.contains(packageName) ?: false))
             }
         }
@@ -93,8 +92,8 @@ class FirstFragment : Fragment(){
         val replyText = binding.root.findViewById<EditText>(R.id.replyText).text
         editor.putString(REPLY_TEXT_KEY, replyText.toString())
         editor.putBoolean(QUOTE_REPLY_KEY, binding.root.findViewById<CheckBox>(R.id.quote_reply).isChecked)
-        editor.putString(FILTER_REGEX_TITLE_KEY, binding.root.findViewById<EditText>(R.id.regex_title).text.toString())
-        editor.putString(FILTER_REGEX_TEXT_KEY, binding.root.findViewById<EditText>(R.id.regex_text).text.toString())
+//        editor.putString(FILTER_REGEX_TITLE_KEY, binding.root.findViewById<EditText>(R.id.regex_title).text.toString())
+//        editor.putString(FILTER_REGEX_TEXT_KEY, binding.root.findViewById<EditText>(R.id.regex_text).text.toString())
         editor.apply()
 
         Toast.makeText(this.requireContext(), "Filter apps saved!", Toast.LENGTH_SHORT).show()

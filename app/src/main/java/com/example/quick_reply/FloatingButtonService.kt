@@ -89,12 +89,14 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
                     removeItemWithKey(key)
                 }
             }
-            speechText = text
-            if (textToSpeech != null) {
-                textToSpeech?.stop();       // Stops the current speech
-                textToSpeech?.shutdown();   // Completely shuts down the TTS engine
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                speechText = text
+                if (textToSpeech != null) {
+                    textToSpeech?.stop();       // Stops the current speech
+                    textToSpeech?.shutdown();   // Completely shuts down the TTS engine
+                }
+                textToSpeech = TextToSpeech(this, this)
             }
-            textToSpeech = TextToSpeech(this, this)
         }
         return START_STICKY
     }
@@ -200,7 +202,9 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
             // Set language if necessary
             textToSpeech?.setLanguage(Locale("vi","VN"))
             textToSpeech?.setSpeechRate(1.5f)
-            textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null)
+            };
         }
     }
 }

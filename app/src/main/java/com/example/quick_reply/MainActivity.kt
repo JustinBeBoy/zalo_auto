@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_draw_overlay_settings -> {
-                if (!Settings.canDrawOverlays(this)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
 //                    activityResultLauncher.launch(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
                     val intent = Intent(
                         Settings.ACTION_MANAGE_OVERLAY_PERMISSION,

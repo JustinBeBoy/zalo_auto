@@ -6,6 +6,7 @@ import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.content.Intent
 import android.graphics.Path
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
@@ -118,9 +119,9 @@ class MyAccessibilityService : AccessibilityService() {
                 Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
                 // Look for an EditText (or any input field)
                 if (childNode != null) {
-                    if (childNode.className == config.className && childNode.contentDescription == config.contentDescription){
-//                        Log.d("FIND_BUTTON", childNode?.className?.toString() ?:"")
-//                        Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
+                        Log.d("FIND_BUTTON", childNode?.className?.toString() ?:"")
+                        Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
+                    if (childNode.className == config.className && config.contentDescription.contains(childNode.contentDescription)){
                         return  childNode
                     }
                 }
@@ -155,6 +156,9 @@ class MyAccessibilityService : AccessibilityService() {
         return null // No input field found
     }
     private fun performSwipe(startX: Float, startY: Float, endX: Float, endY: Float, duration: Long) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return
+        }
         val swipePath = Path()
         swipePath.moveTo(startX, startY)
         swipePath.lineTo(endX, endY)

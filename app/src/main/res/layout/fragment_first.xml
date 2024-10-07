@@ -36,42 +36,42 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/filter_app"/>
 
-                <TextView
-                    android:id="@+id/filter_title_label"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/all_apps"
-                    android:text="Regex for title:"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_title_label"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/all_apps"-->
+<!--                    android:text="Regex for title:"/>-->
 
-                <EditText
-                    android:id="@+id/regex_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Filter regex for title"
-                    android:lines="3"
-                    android:layout_below="@id/filter_title_label"/>
-                <TextView
-                    android:id="@+id/filter_text_label"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/regex_title"
-                    android:text="Regex for text:"/>
+<!--                <EditText-->
+<!--                    android:id="@+id/regex_title"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Filter regex for title"-->
+<!--                    android:lines="3"-->
+<!--                    android:layout_below="@id/filter_title_label"/>-->
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_text_label"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/regex_title"-->
+<!--                    android:text="Regex for text:"/>-->
 
-                <EditText
-                    android:id="@+id/regex_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Filter regex for text"
-                    android:lines="3"
-                    android:layout_below="@id/filter_text_label"/>
+<!--                <EditText-->
+<!--                    android:id="@+id/regex_text"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Filter regex for text"-->
+<!--                    android:lines="3"-->
+<!--                    android:layout_below="@id/filter_text_label"/>-->
 
                 <LinearLayout
                     android:id="@+id/checkbox_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/regex_text"
+                    android:layout_below="@id/all_apps"
                     android:orientation="horizontal">
                         <CheckBox
                             android:id="@+id/quote_reply"

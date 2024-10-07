@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.quick_reply"
-        minSdk = 24
+        minSdk = 20
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

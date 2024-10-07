@@ -11,17 +11,18 @@ enum class SWIPE_TYPE {
 
 data class AppConfig (
     val className: String,
-    val contentDescription: String,
+    val contentDescription: List<String>,
     val swipeType: SWIPE_TYPE,
 )
 
 //    "com.zing.zalo","com.facebook.orca","org.thunderdog.challegram", "org.telegram.messenger"
-val appConfig = hashMapOf("org.telegram.messenger" to AppConfig("android.view.View","Send", SWIPE_TYPE.LEFT),
-    "com.zing.zalo" to AppConfig("android.widget.ImageButton","Send", SWIPE_TYPE.LEFT),
-    "com.facebook.orca" to AppConfig("android.widget.Button","Send", SWIPE_TYPE.RIGHT),)
+val appConfig = hashMapOf("org.telegram.messenger" to AppConfig("android.view.View",
+    listOf("Send", "Gủi"), SWIPE_TYPE.LEFT),
+    "com.zing.zalo" to AppConfig("android.widget.ImageButton",listOf("Send", "Gủi"), SWIPE_TYPE.LEFT),
+    "com.facebook.orca" to AppConfig("android.widget.Button",listOf("Send", "Gủi"), SWIPE_TYPE.RIGHT),)
 
 fun GetAppConfig(packageName: String) : AppConfig {
-    return appConfig[packageName] ?: AppConfig("android.widget.ImageButton","Send", SWIPE_TYPE.LEFT)
+    return appConfig[packageName] ?: AppConfig("android.widget.ImageButton",listOf("Send", "Gủi"), SWIPE_TYPE.LEFT)
 }
 
 val PREFS_NAME = "CheckedAppsPrefs"
