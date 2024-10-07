@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">quick_reply</string>
+    <string name="action_read_noti_settings">Read Notificaiton Settings</string>
+    <string name="action_draw_overlay_settings">Draw Overlays Settings</string>
+    <string name="action_accessibility_settings">Accessibility Settings</string>
+    <string name="accessibility_service_description">Accessibility Settings is required</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+</resources>
