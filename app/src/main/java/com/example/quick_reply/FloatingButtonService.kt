@@ -90,7 +90,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
                 }
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                speechText = text
+                speechText = text.replace("@All", "")
                 if (textToSpeech != null) {
                     textToSpeech?.stop();       // Stops the current speech
                     textToSpeech?.shutdown();   // Completely shuts down the TTS engine

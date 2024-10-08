@@ -18,7 +18,7 @@ data class AppConfig (
 //    "com.zing.zalo","com.facebook.orca","org.thunderdog.challegram", "org.telegram.messenger"
 val appConfig = hashMapOf("org.telegram.messenger" to AppConfig("android.view.View",
     listOf("Send", "Gủi"), SWIPE_TYPE.LEFT),
-    "com.zing.zalo" to AppConfig("android.widget.ImageButton",listOf("Send", "Gủi"), SWIPE_TYPE.LEFT),
+    "com.zing.zalo" to AppConfig("android.widget.ImageButton",listOf("Send", "Gửi tin nhắn đi"), SWIPE_TYPE.LEFT),
     "com.facebook.orca" to AppConfig("android.widget.Button",listOf("Send", "Gủi"), SWIPE_TYPE.RIGHT),)
 
 fun GetAppConfig(packageName: String) : AppConfig {

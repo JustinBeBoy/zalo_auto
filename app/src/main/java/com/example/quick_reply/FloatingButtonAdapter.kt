@@ -62,7 +62,7 @@ class FloatingButtonAdapter(
                         swipeIntent.putExtra("package_name", item.packageName)
                         context.startService(swipeIntent)
                     }
-                }, 300)
+                }, 3000)
             } else {
                 // Send the reply
                 if (item.replyIntent != null) {

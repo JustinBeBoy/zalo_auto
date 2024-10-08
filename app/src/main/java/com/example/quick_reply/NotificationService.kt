@@ -24,6 +24,7 @@ class NotificationService: NotificationListenerService() {
             val subtext = extras?.get(Notification.EXTRA_SUB_TEXT)
             val key = sbn?.key
             val convertTitle = convertToLowercaseNonAccent(title.toString())
+            // xoá bỏ đoạn title
             val cleanText = (text.toString()).replace(Regex("^[^:]*:"), "").trim()
             val ticker = sbn?.notification?.tickerText
             val tickerConvert = convertToLowercaseNonAccent(ticker.toString())
@@ -31,10 +32,10 @@ class NotificationService: NotificationListenerService() {
 
 
             Log.d( TAG , "********** onNotificationPosted" )
-            Log.d( TAG , "ID :${sbn?.id},KEY :${key}, TITLE: $title, TEXT: $text, SUB_TEXT: $subtext, PACKAGE: ${sbn?.packageName}")
-//            for (k in extras?.keySet()!!){
-//                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
-//            }
+            Log.d( TAG , "ID :${sbn?.id},KEY :${key}, TITLE: $title, TEXT: $text, SUB_TEXT: $subtext, PACKAGE: ${sbn?.packageName}, Ticker: ${sbn?.notification?.tickerText}")
+            for (k in extras?.keySet()!!){
+                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
+            }
 
             // lọc tin nhắn nhóm
             if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
@@ -42,7 +43,7 @@ class NotificationService: NotificationListenerService() {
             }
 
             // loại bỏ tin nhắn chỉ có nguyên @all
-            if (!cleanText.matches(Regex("^(?!@all\$).+\$"))) {
+            if (!converText.matches(Regex("^(?!@all\$).*(?:@all.*|^[^@]*\$).*"))) {
                 return
             }
 
@@ -63,6 +64,7 @@ class NotificationService: NotificationListenerService() {
             // xử lý gửi tin nhắn thoại
             if (converText.matches(Regex(".*tin nhan thoai.*"))) {
                 //TODO: xử lý bật app lên
+                sbn.notification.contentIntent?.send()
                 return
             }
 

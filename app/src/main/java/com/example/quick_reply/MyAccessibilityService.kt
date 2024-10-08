@@ -62,7 +62,7 @@ class MyAccessibilityService : AccessibilityService() {
                         centerY.toFloat(),
                         toX,
                         centerY.toFloat(),
-                        100
+                        300
                     )
 
                     Timer().schedule(object : TimerTask() {
