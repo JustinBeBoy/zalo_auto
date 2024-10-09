@@ -29,6 +29,7 @@ class NotificationService: NotificationListenerService() {
             val ticker = sbn?.notification?.tickerText
             val tickerConvert = convertToLowercaseNonAccent(ticker.toString())
             val converText = convertToLowercaseNonAccent(cleanText.toString())
+            val uidSender: String? = extras?.getString("extra_notification_uid_sender")
 
 
             Log.d( TAG , "********** onNotificationPosted" )
@@ -38,7 +39,11 @@ class NotificationService: NotificationListenerService() {
             }
 
             // lọc tin nhắn nhóm
-            if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
+            if (uidSender != null) {
+                if (!uidSender.contains("group", ignoreCase = true)) {
+                    return
+                }
+            } else if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
                 return
             }
 
@@ -55,6 +60,7 @@ class NotificationService: NotificationListenerService() {
                 converText.matches(Regex(".*gui link.*")) ||
                 converText.matches(Regex(".*gui tap tin.*")) ||
                 converText.matches(Regex(".*gui vi tri.*")) ||
+                converText.matches(Regex(".*da gui video.*")) ||
                 converText.length <= 5 ||
                 converText.length > 350
                 ) {
