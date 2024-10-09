@@ -7,6 +7,8 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.speech.tts.TextToSpeech
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -42,6 +44,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
     private var moving = false
 
     private var textToSpeech: TextToSpeech? = null
+    var vibrator: Vibrator? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Check if the service was started with notification data
@@ -96,6 +99,15 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
                     textToSpeech?.shutdown();   // Completely shuts down the TTS engine
                 }
                 textToSpeech = TextToSpeech(this, this)
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // this effect creates the vibration of default amplitude for 1000ms(1 sec)
+                val vibrationEffect1 = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE);
+                // it is safe to cancel other vibrations currently taking place
+                vibrator = applicationContext.getSystemService(VIBRATOR_SERVICE) as Vibrator
+                vibrator?.cancel();
+                vibrator?.vibrate(vibrationEffect1);
             }
         }
         return START_STICKY

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -62,7 +63,7 @@ class FloatingButtonAdapter(
                         swipeIntent.putExtra("package_name", item.packageName)
                         context.startService(swipeIntent)
                     }
-                }, 3000)
+                }, 1000)
             } else {
                 // Send the reply
                 if (item.replyIntent != null) {
@@ -70,7 +71,10 @@ class FloatingButtonAdapter(
                 }
             }
 
-            onItemClick?.invoke(item.key)
+            onItemClick.invoke(item.key)
+        }
+        holder.clear_btn.setOnClickListener {
+            onItemClick.invoke(item.key)
         }
     }
 
@@ -102,6 +106,7 @@ class FloatingButtonAdapter(
         val text = view.findViewById(R.id.floating_text) as TextView
         val name = view.findViewById(R.id.floating_name) as TextView
         val btn = view.findViewById(R.id.floating_button) as Button
+        val clear_btn = view.findViewById(R.id.clear_btn) as ImageButton
         val appIcon = view.findViewById(R.id.f_app_icon) as ImageView
     }
 }
