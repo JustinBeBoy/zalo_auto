@@ -44,6 +44,14 @@ class FloatingButtonAdapter(
         holder.text.text = item.text
         holder.name.text = item.name
         holder.appIcon.setImageDrawable(context.packageManager.getApplicationIcon(item.packageName ?:""))
+        holder.text.setOnClickListener {
+            try {
+                item.contentIntent?.send()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            onItemClick.invoke(item.key)
+        }
         holder.btn.setOnClickListener { _: View? ->
             if (item.quoteReply) {
                 try {

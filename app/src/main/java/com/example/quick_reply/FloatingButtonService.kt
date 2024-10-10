@@ -36,6 +36,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
     private val listFloatingBtn = mutableListOf<FloatingInfo>()
 
     var speechText : String = ""
+    var speechSpeed : Float = 1.5f
 
     private var offsetX = 0f
     private var offsetY = 0f
@@ -58,15 +59,17 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
             val sharedPreferences = this.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
             val quoteReply = sharedPreferences.getBoolean(QUOTE_REPLY_KEY, false)
+            val speechNoti = sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true)
+            speechSpeed = sharedPreferences.getFloat(SPEECH_SPEED_KEY, 1.5f)
 
             // Get the reply PendingIntent
             val replyPendingIntent : PendingIntent? = intent.getParcelableExtra("reply_intent")
             val contentPendingIntent : PendingIntent? = intent.getParcelableExtra("content_intent")
 
-            val splits = text.split(":")
-            if (splits.count() > 1){
-                name = splits[0].trim()
-                text = splits[1].trim()
+            val index = text.indexOf(":")
+            if ((title?.contains("nhóm") == true || (title?.indexOf(":") ?: -1) > -1) && index > -1){
+                name = text.substring(0, index)
+                text = text.substring(index + 1)
             }
 
             // check duplicate text
@@ -87,12 +90,12 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
                 showFloatingButton()
             }
             GlobalScope.launch {
-                delay(15000)
+                delay(30000)
                 withContext(Dispatchers.Main) {
                     removeItemWithKey(key)
                 }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && speechNoti) {
                 speechText = text.replace("@All", "")
                 if (textToSpeech != null) {
                     textToSpeech?.stop();       // Stops the current speech
@@ -213,7 +216,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
         if (status == TextToSpeech.SUCCESS) {
             // Set language if necessary
             textToSpeech?.setLanguage(Locale("vi","VN"))
-            textToSpeech?.setSpeechRate(1.5f)
+            textToSpeech?.setSpeechRate(speechSpeed)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null)
             };

@@ -72,12 +72,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/all_apps"
-                    android:orientation="horizontal">
-                        <CheckBox
-                            android:id="@+id/quote_reply"
-                            android:layout_width="wrap_content"
+                    android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Quote reply"/>
+                            android:orientation="horizontal">
+                                <CheckBox
+                                    android:id="@+id/quote_reply"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="Quote reply"/>
+                                <CheckBox
+                                    android:id="@+id/speech_notifcation"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="Speech Notification"/>
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/speed_text"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/replyText"
+                            android:text="Speech speed: 1.5"/>
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/speech_speed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="1f"
+                            android:value="1.5f"
+                            android:valueTo="2.5f"
+                            android:stepSize="0.1"/>
                 </LinearLayout>
 
                 <Button

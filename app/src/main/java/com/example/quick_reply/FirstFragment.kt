@@ -12,11 +12,13 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quick_reply.databinding.FragmentFirstBinding
+import com.google.android.material.slider.Slider
 
 
 /**
@@ -61,11 +63,19 @@ class FirstFragment : Fragment(){
         val checkedApps = sharedPreferences.getStringSet(CHECKED_APPS_KEY, emptySet())
         val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
         val quoteReply = sharedPreferences.getBoolean(QUOTE_REPLY_KEY, false)
+        val speed = sharedPreferences.getFloat(SPEECH_SPEED_KEY, 1.5f)
+        val speechNoti = sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true)
 //        val filterRegexText = sharedPreferences.getString(FILTER_REGEX_TEXT_KEY, "^[^:]*\$")
 //        val filterRegexTitle = sharedPreferences.getString(FILTER_REGEX_TITLE_KEY, "")
 
         binding.root.findViewById<EditText>(R.id.replyText).setText(replyText)
         binding.root.findViewById<CheckBox>(R.id.quote_reply).isChecked = quoteReply
+        binding.root.findViewById<CheckBox>(R.id.speech_notifcation).isChecked = speechNoti
+        binding.root.findViewById<Slider>(R.id.speech_speed).value = speed
+        binding.root.findViewById<TextView>(R.id.speed_text).text = "Speech speed: $speed"
+        binding.root.findViewById<Slider>(R.id.speech_speed).addOnChangeListener { _, value, _ ->
+            binding.root.findViewById<TextView>(R.id.speed_text).text = "Speech speed: $value"
+        }
 //        binding.root.findViewById<EditText>(R.id.regex_title).setText(filterRegexTitle)
 //        binding.root.findViewById<EditText>(R.id.regex_text).setText(filterRegexText)
 
@@ -92,6 +102,7 @@ class FirstFragment : Fragment(){
         val replyText = binding.root.findViewById<EditText>(R.id.replyText).text
         editor.putString(REPLY_TEXT_KEY, replyText.toString())
         editor.putBoolean(QUOTE_REPLY_KEY, binding.root.findViewById<CheckBox>(R.id.quote_reply).isChecked)
+        editor.putFloat(SPEECH_SPEED_KEY, binding.root.findViewById<Slider>(R.id.speech_speed).value)
 //        editor.putString(FILTER_REGEX_TITLE_KEY, binding.root.findViewById<EditText>(R.id.regex_title).text.toString())
 //        editor.putString(FILTER_REGEX_TEXT_KEY, binding.root.findViewById<EditText>(R.id.regex_text).text.toString())
         editor.apply()
