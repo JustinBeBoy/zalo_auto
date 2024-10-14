@@ -10,4 +10,4 @@
 local.properties
 /release
 /.idea/.name
-
+*.apk
