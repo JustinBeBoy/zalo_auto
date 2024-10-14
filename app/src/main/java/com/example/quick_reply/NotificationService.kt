@@ -28,8 +28,9 @@ class NotificationService: NotificationListenerService() {
             val cleanText = (text.toString()).replace(Regex("^[^:]*:"), "").trim()
             val ticker = sbn?.notification?.tickerText
             val tickerConvert = convertToLowercaseNonAccent(ticker.toString())
-            val converText = convertToLowercaseNonAccent(cleanText.toString())
+            val convertText = convertToLowercaseNonAccent(cleanText)
             val uidSender: String? = extras?.getString("extra_notification_uid_sender")
+            val lowercaseNonAccentText = convertToLowercaseNonAccent(text.toString())
 
 
             Log.d( TAG , "********** onNotificationPosted" )
@@ -47,28 +48,32 @@ class NotificationService: NotificationListenerService() {
                 return
             }
 
-            // loại bỏ tin nhắn chỉ có nguyên @all
-            if (!converText.matches(Regex("^(?!@all\$).*(?:@all.*|^[^@]*\$).*"))) {
-                return
+            // loại bỏ tin nhắn chỉ có nguyên @all và cho qua tin nhắn có nhắc tới mình
+            if (!convertText.matches(Regex("^(?!@all\$).*(?:@all.*|^[^@]*\$).*"))) {
+                if (!lowercaseNonAccentText.matches(Regex(".*nhac den ban.*"))){
+                    //TODO: xử lý khi bấm vào chỉ mở app lên
+                    return
+                }
             }
 
             // loại bỏ các tin nhắn không cần thiết
             if (tickerConvert.matches(Regex(".*thu hoi tin nhan.*")) ||
-                converText.matches(Regex(".*da gui anh.*")) ||
-                converText.matches(Regex(".*sticker.*")) ||
-                converText.matches(Regex(".*gui danh thiep.*")) ||
-                converText.matches(Regex(".*gui link.*")) ||
-                converText.matches(Regex(".*gui tap tin.*")) ||
-                converText.matches(Regex(".*gui vi tri.*")) ||
-                converText.matches(Regex(".*da gui video.*")) ||
-                converText.length <= 5 ||
-                converText.length > 350
+                convertText.matches(Regex(".*da gui anh.*")) ||
+                convertText.matches(Regex(".*sticker.*")) ||
+                convertText.matches(Regex(".*gui danh thiep.*")) ||
+                convertText.matches(Regex(".*gui link.*")) ||
+                convertText.matches(Regex(".*gui tap tin.*")) ||
+                convertText.matches(Regex(".*gui vi tri.*")) ||
+                convertText.matches(Regex(".*da gui video.*")) ||
+                convertText.matches(Regex(".*da gui nhieu anh.*")) ||
+                convertText.length <= 5 ||
+                convertText.length > 350
                 ) {
                 return
             }
 
             // xử lý gửi tin nhắn thoại
-            if (converText.matches(Regex(".*tin nhan thoai.*"))) {
+            if (convertText.matches(Regex(".*tin nhan thoai.*"))) {
                 //TODO: xử lý bật app lên
                 sbn.notification.contentIntent?.send()
                 return

@@ -32,9 +32,10 @@ class MyAccessibilityService : AccessibilityService() {
         package_name = intent?.getStringExtra("package_name")
         config = GetAppConfig(package_name ?: "")
         if(text!=null){
-                if(text!!.split(":").count() > 1){
-                    text = text!!.split(":")[1].trim()
-                }
+            //Tạo sao lại cắt : đi
+//                if(text!!.split(":").count() > 1){
+//                    text = text!!.split(":")[1].trim()
+//                }
                 val rootNode = rootInActiveWindow
                 if (rootNode != null) {
                     // Search for the node that contains the desired text
@@ -62,7 +63,7 @@ class MyAccessibilityService : AccessibilityService() {
                         centerY.toFloat(),
                         toX,
                         centerY.toFloat(),
-                        300
+                        100
                     )
 
                     Timer().schedule(object : TimerTask() {
@@ -70,7 +71,7 @@ class MyAccessibilityService : AccessibilityService() {
                             val btn = findButton(rootNode)
                             btn?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
                         }
-                    }, 450)
+                    }, 150)
                 }
             }
         }
@@ -82,10 +83,12 @@ class MyAccessibilityService : AccessibilityService() {
         textToMatch: String?
     ): AccessibilityNodeInfo? {
         if (rootNode == null || textToMatch == null) return null
-
+        val cleanTextMatch = textToMatch.trim()
         // Check if the current node contains the desired text
-        if (rootNode.text != null) {
-            if(rootNode.text.toString().split("\n").contains(textToMatch))
+        val screenText = rootNode.text ?: rootNode.contentDescription
+        Log.d("MyAccessibilityService", "Text: $screenText")
+        if (screenText!= null) {
+            if(screenText.split("\n").contains(cleanTextMatch))
                 return rootNode // Found the node with the matching text
         }
 

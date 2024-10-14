@@ -90,7 +90,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
                 showFloatingButton()
             }
             GlobalScope.launch {
-                delay(30000)
+                delay(15000)
                 withContext(Dispatchers.Main) {
                     removeItemWithKey(key)
                 }

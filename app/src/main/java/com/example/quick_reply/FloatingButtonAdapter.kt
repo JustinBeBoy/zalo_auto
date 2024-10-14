@@ -4,7 +4,11 @@ import android.app.PendingIntent
 import android.app.RemoteInput
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +20,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import java.util.Timer
 import java.util.TimerTask
+
 
 class FloatingButtonAdapter(
     private val list: MutableList<FloatingInfo>,
@@ -60,6 +65,18 @@ class FloatingButtonAdapter(
                     e.printStackTrace()
                 }
 
+                val vibrator: Vibrator
+                // Kiểm tra phiên bản Android
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                    val vibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
+                     vibrator = vibratorManager.getDefaultVibrator();
+                    vibrator.vibrate(vibrationEffect)
+                } else {
+                    vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    vibrator.vibrate(500)
+                }
+
                 Timer().schedule(object : TimerTask() {
                     override fun run() {
                         val swipeIntent = Intent(
@@ -71,7 +88,7 @@ class FloatingButtonAdapter(
                         swipeIntent.putExtra("package_name", item.packageName)
                         context.startService(swipeIntent)
                     }
-                }, 1000)
+                }, 800)
             } else {
                 // Send the reply
                 if (item.replyIntent != null) {
