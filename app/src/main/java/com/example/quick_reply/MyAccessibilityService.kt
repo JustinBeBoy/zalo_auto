@@ -8,11 +8,14 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import java.util.Timer
-import java.util.TimerTask
 import android.util.Log
+import java.util.TimerTask
+import kotlin.concurrent.timerTask
 
 
 class MyAccessibilityService : AccessibilityService() {
@@ -20,17 +23,33 @@ class MyAccessibilityService : AccessibilityService() {
     var replyText: String? = null
     var package_name: String? = null
     lateinit var config : AppConfig
+    var isChecking = false
+
+    private val handler = Handler(Looper.getMainLooper())
+    private var lastEventType: Int? = null
+
+    // Thời gian chờ để xác định đây là lần gọi cuối cùng
+    private val debounceDelay = 100L
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-
+        if (!isChecking || event?.packageName != package_name) {
+            return
+        }
+        lastEventType = event?.eventType
+        handler.removeCallbacks(processLastEvent)
+        // Thiết lập lại thời gian chờ để xử lý sự kiện mới nhất
+        handler.postDelayed(processLastEvent, debounceDelay)
     }
 
-    override fun onInterrupt() {
+    private val processLastEvent = Runnable {
+        if (lastEventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+            isChecking = false
+            Log.d("AccessibilityService", "Nội dung của $packageName đã thay đổi và hiển thị")
+            quoteReply()
+            stopSelf()
+        }
     }
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        text = intent?.getStringExtra("text")
-        replyText = intent?.getStringExtra("reply_text")
-        package_name = intent?.getStringExtra("package_name")
-        config = GetAppConfig(package_name ?: "")
+
+    fun quoteReply(){
         if(text!=null){
             //Tạo sao lại cắt : đi
 //                if(text!!.split(":").count() > 1){
@@ -71,10 +90,20 @@ class MyAccessibilityService : AccessibilityService() {
                             val btn = findButton(rootNode)
                             btn?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
                         }
-                    }, 150)
+                    }, 100)
                 }
             }
         }
+    }
+
+    override fun onInterrupt() {
+    }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        text = intent?.getStringExtra("text")
+        replyText = intent?.getStringExtra("reply_text")
+        package_name = intent?.getStringExtra("package_name")
+        config = GetAppConfig(package_name ?: "")
+        isChecking = true
         return START_NOT_STICKY
     }
 
@@ -86,7 +115,7 @@ class MyAccessibilityService : AccessibilityService() {
         val cleanTextMatch = textToMatch.trim()
         // Check if the current node contains the desired text
         val screenText = rootNode.text ?: rootNode.contentDescription
-        Log.d("MyAccessibilityService", "Text: $screenText")
+//        Log.d("MyAccessibilityService", "Text: $screenText")
         if (screenText!= null) {
             if(screenText.split("\n").contains(cleanTextMatch))
                 return rootNode // Found the node with the matching text
@@ -118,12 +147,10 @@ class MyAccessibilityService : AccessibilityService() {
             if (rootNode == null) return null
             for (i in 0 until rootNode.childCount) {
                 val childNode = rootNode.getChild(i)
-                Log.d("FIND_BUTTON", childNode?.className?.toString() ?:"")
-                Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
                 // Look for an EditText (or any input field)
                 if (childNode != null) {
-                        Log.d("FIND_BUTTON", childNode?.className?.toString() ?:"")
-                        Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
+//                        Log.d("FIND_BUTTON", childNode?.className?.toString() ?:"")
+//                        Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
                     if (childNode.className == config.className && config.contentDescription.contains(childNode.contentDescription)){
                         return  childNode
                     }

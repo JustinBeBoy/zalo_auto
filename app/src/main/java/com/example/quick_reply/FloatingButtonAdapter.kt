@@ -77,8 +77,8 @@ class FloatingButtonAdapter(
                     vibrator.vibrate(500)
                 }
 
-                Timer().schedule(object : TimerTask() {
-                    override fun run() {
+//                Timer().schedule(object : TimerTask() {
+//                    override fun run() {
                         val swipeIntent = Intent(
                             context,
                             MyAccessibilityService::class.java
@@ -87,8 +87,8 @@ class FloatingButtonAdapter(
                         swipeIntent.putExtra("reply_text", item.replyText)
                         swipeIntent.putExtra("package_name", item.packageName)
                         context.startService(swipeIntent)
-                    }
-                }, 800)
+//                    }
+//                }, 800)
             } else {
                 // Send the reply
                 if (item.replyIntent != null) {

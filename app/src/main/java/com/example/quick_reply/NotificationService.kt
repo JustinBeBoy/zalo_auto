@@ -1,5 +1,6 @@
 package com.example.quick_reply
 
+import android.app.ActivityManager
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
@@ -151,6 +152,20 @@ class NotificationService: NotificationListenerService() {
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
-//        Log.d( TAG , "********** onNotificationRemoved" )
+        Log.d( TAG , "********** onNotificationRemoved ${sbn?.packageName}" )
+    }
+
+    fun isAppInForeground(packageName: String): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val appProcesses = activityManager.runningAppProcesses
+        if (appProcesses != null) {
+            for (appProcess in appProcesses) {
+                if (appProcess.processName == packageName &&
+                    appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
