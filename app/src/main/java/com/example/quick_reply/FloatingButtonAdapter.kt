@@ -13,11 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.slider.Slider
 import java.util.Timer
 import java.util.TimerTask
 
@@ -59,6 +62,12 @@ class FloatingButtonAdapter(
         }
         holder.btn.setOnClickListener { _: View? ->
             if (item.quoteReply) {
+//                val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+//                val editor = sharedPreferences.edit()
+//                editor.putString(PACKAGE_NAME_KEY, item.packageName)
+//                editor.putString(TEXT_KEY, item.text)
+//                editor.apply()
+
                 try {
                     item.contentIntent?.send()
                 } catch (e: Exception) {

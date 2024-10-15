@@ -34,4 +34,7 @@ val QUOTE_REPLY_KEY = "quote_reply"
 val SPEECH_SPEED_KEY = "speech_speed"
 val SPEECH_NOTI_KEY = "speech_noti"
 
+val PACKAGE_NAME_KEY = "package_name"
+val TEXT_KEY = "text"
+
 val MAX_COUNT = 4

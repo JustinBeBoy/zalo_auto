@@ -10,12 +10,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import java.util.Timer
-import android.util.Log
 import java.util.TimerTask
-import kotlin.concurrent.timerTask
 
 
 class MyAccessibilityService : AccessibilityService() {
@@ -24,19 +23,23 @@ class MyAccessibilityService : AccessibilityService() {
     var package_name: String? = null
     lateinit var config : AppConfig
     var isChecking = false
+    val delayDuration = 30L
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
 
     // Thời gian chờ để xác định đây là lần gọi cuối cùng
-    private val debounceDelay = 100L
+    private val debounceDelay = 50L
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (!isChecking || event?.packageName != package_name) {
             return
         }
+        if (lastEventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+            Log.d("AccessibilityService", "Nội dung của $packageName đã thay đổi và hiển thị")
+        }
         lastEventType = event?.eventType
         handler.removeCallbacks(processLastEvent)
-        // Thiết lập lại thời gian chờ để xử lý sự kiện mới nhất
+//         Thiết lập lại thời gian chờ để xử lý sự kiện mới nhất
         handler.postDelayed(processLastEvent, debounceDelay)
     }
 
@@ -69,28 +72,33 @@ class MyAccessibilityService : AccessibilityService() {
 
                     val nodePosition = Rect()
                     targetNode.getBoundsInScreen(nodePosition)
-                    val centerX = (nodePosition.left + nodePosition.right) / 2
+//                    val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
                     val centerY = (nodePosition.top + nodePosition.bottom) / 2
-                    var fromX = 500F
+                    val displayMetrics = resources.displayMetrics
+                    val centerX = (displayMetrics.widthPixels - 100).toFloat()
+
+                    var fromX = centerX
                     var toX = 100F
                     if(config.swipeType == SWIPE_TYPE.RIGHT){
                         fromX = 100F
-                        toX = 500F
+                        toX = centerX
                     }
+
+                    Log.d(this.javaClass.simpleName , "********** Start swipe $packageName from $fromX to $toX duration $delayDuration" )
                     performSwipe(
                         fromX,
                         centerY.toFloat(),
                         toX,
                         centerY.toFloat(),
-                        100
+                        delayDuration
                     )
-
                     Timer().schedule(object : TimerTask() {
                         override fun run() {
                             val btn = findButton(rootNode)
+                            Log.d(this.javaClass.simpleName , "********** Start click send")
                             btn?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
                         }
-                    }, 100)
+                    }, delayDuration + 20)
                 }
             }
         }
@@ -104,6 +112,8 @@ class MyAccessibilityService : AccessibilityService() {
         package_name = intent?.getStringExtra("package_name")
         config = GetAppConfig(package_name ?: "")
         isChecking = true
+//        quoteReply()
+//        stopSelf()
         return START_NOT_STICKY
     }
 

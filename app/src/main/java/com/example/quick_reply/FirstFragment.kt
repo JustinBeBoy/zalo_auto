@@ -103,6 +103,7 @@ class FirstFragment : Fragment(){
         editor.putString(REPLY_TEXT_KEY, replyText.toString())
         editor.putBoolean(QUOTE_REPLY_KEY, binding.root.findViewById<CheckBox>(R.id.quote_reply).isChecked)
         editor.putFloat(SPEECH_SPEED_KEY, binding.root.findViewById<Slider>(R.id.speech_speed).value)
+        editor.putBoolean(SPEECH_NOTI_KEY,  binding.root.findViewById<CheckBox>(R.id.speech_notifcation).isChecked)
 //        editor.putString(FILTER_REGEX_TITLE_KEY, binding.root.findViewById<EditText>(R.id.regex_title).text.toString())
 //        editor.putString(FILTER_REGEX_TEXT_KEY, binding.root.findViewById<EditText>(R.id.regex_text).text.toString())
         editor.apply()

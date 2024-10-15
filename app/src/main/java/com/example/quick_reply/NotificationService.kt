@@ -8,6 +8,8 @@ import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import java.util.Timer
+import java.util.TimerTask
 
 class NotificationService: NotificationListenerService() {
     private val TAG = this.javaClass.simpleName
@@ -36,9 +38,9 @@ class NotificationService: NotificationListenerService() {
 
             Log.d( TAG , "********** onNotificationPosted" )
             Log.d( TAG , "ID :${sbn?.id},KEY :${key}, TITLE: $title, TEXT: $text, SUB_TEXT: $subtext, PACKAGE: ${sbn?.packageName}, Ticker: ${sbn?.notification?.tickerText}")
-            for (k in extras?.keySet()!!){
-                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
-            }
+//            for (k in extras?.keySet()!!){
+//                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
+//            }
 
             // lọc tin nhắn nhóm
             if (uidSender != null) {
@@ -153,6 +155,29 @@ class NotificationService: NotificationListenerService() {
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
         Log.d( TAG , "********** onNotificationRemoved ${sbn?.packageName}" )
+//        val sharedPreferences = this.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+//        val packageName : String? = sharedPreferences.getString(PACKAGE_NAME_KEY, null)
+//        if(packageName !=null && packageName == sbn?.packageName) {
+//            val text = sharedPreferences.getString(TEXT_KEY, null)
+//            val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
+////            Timer().schedule(object : TimerTask() {
+////                override fun run() {
+//                    val swipeIntent = Intent(
+//                        applicationContext,
+//                        MyAccessibilityService::class.java
+//                    )
+//                    swipeIntent.putExtra("text", text)
+//                    swipeIntent.putExtra("reply_text", replyText)
+//                    swipeIntent.putExtra("package_name",packageName)
+//                    Log.d( TAG , "********** Start accessibility $packageName" )
+//                    applicationContext.startService(swipeIntent)
+////                }
+////            }, 50)
+//            val editor = sharedPreferences.edit()
+//            editor.remove(PACKAGE_NAME_KEY)
+//            editor.remove(TEXT_KEY)
+//            editor.apply()
+//        }
     }
 
     fun isAppInForeground(packageName: String): Boolean {
