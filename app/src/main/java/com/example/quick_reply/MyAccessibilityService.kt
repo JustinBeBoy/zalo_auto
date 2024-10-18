@@ -3,6 +3,9 @@ package com.example.quick_reply
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Path
 import android.graphics.Rect
@@ -13,8 +16,10 @@ import android.os.Looper
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import java.util.Timer
-import java.util.TimerTask
+import androidx.core.view.accessibility.AccessibilityEventCompat
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class MyAccessibilityService : AccessibilityService() {
@@ -23,7 +28,7 @@ class MyAccessibilityService : AccessibilityService() {
     var package_name: String? = null
     lateinit var config : AppConfig
     var isChecking = false
-    val delayDuration = 30L
+    val delayDuration = 300L
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
@@ -63,19 +68,12 @@ class MyAccessibilityService : AccessibilityService() {
                     // Search for the node that contains the desired text
                 val targetNode = findNodeByText(rootNode, text)
                 if (targetNode != null) {
-                    val inputNode = findInputField(rootNode)
-                    if (inputNode != null) {
-                        // Focus on the input field
-//                        inputNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
-                        sendEnterKey(inputNode, replyText)
-                    }
-
                     val nodePosition = Rect()
                     targetNode.getBoundsInScreen(nodePosition)
-//                    val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
+                    val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
                     val centerY = (nodePosition.top + nodePosition.bottom) / 2
                     val displayMetrics = resources.displayMetrics
-                    val centerX = (displayMetrics.widthPixels - 100).toFloat()
+//                    val centerX = (displayMetrics.widthPixels - 100).toFloat()
 
                     var fromX = centerX
                     var toX = 100F
@@ -92,13 +90,22 @@ class MyAccessibilityService : AccessibilityService() {
                         centerY.toFloat(),
                         delayDuration
                     )
-                    Timer().schedule(object : TimerTask() {
-                        override fun run() {
-                            val btn = findButton(rootNode)
-                            Log.d(this.javaClass.simpleName , "********** Start click send")
-                            btn?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                    GlobalScope.launch {
+                        delay(delayDuration * 2)
+
+                        val inputNode = findInputField(rootNode)
+                        if (inputNode != null) {
+                            // Focus on the input field
+//                                inputNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+                            sendEnterKey(inputNode, replyText)
                         }
-                    }, delayDuration + 20)
+
+                        delay(delayDuration)
+
+                        val btn = findButton(rootNode)
+                        Log.d(this.javaClass.simpleName , "********** Start click send")
+                        btn?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                    }
                 }
             }
         }
@@ -144,12 +151,10 @@ class MyAccessibilityService : AccessibilityService() {
 
     private fun sendEnterKey(node: AccessibilityNodeInfo?, replyText: String?) {
         if (node != null) {
-            val arguments = Bundle()
-            arguments.putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                replyText
-            )
-            node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText(getString(R.string.app_name), replyText)
+            clipboard.setPrimaryClip(clip)
+            node.performAction(AccessibilityNodeInfo.ACTION_PASTE)
         }
     }
 
