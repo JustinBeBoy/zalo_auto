@@ -16,19 +16,20 @@ import android.os.Looper
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Toast
 import androidx.core.view.accessibility.AccessibilityEventCompat
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class MyAccessibilityService : AccessibilityService() {
-    var text : String? = null
+    var text: String? = null
     var replyText: String? = null
     var package_name: String? = null
-    lateinit var config : AppConfig
+    lateinit var config: AppConfig
     var isChecking = false
-    val delayDuration = 300L
+    val delayDuration = 100L
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
@@ -52,22 +53,38 @@ class MyAccessibilityService : AccessibilityService() {
         if (lastEventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
             isChecking = false
             Log.d("AccessibilityService", "Nội dung của $packageName đã thay đổi và hiển thị")
-            quoteReply()
-            stopSelf()
+            GlobalScope.launch {
+                delay(delayDuration * 3)
+                quoteReply()
+                delay(5000)
+                stopSelf()
+            }
         }
     }
 
-    fun quoteReply(){
-        if(text!=null){
+    fun quoteReply() {
+//        GlobalScope.launch(Dispatchers.Main) {
+//            Toast.makeText(this@MyAccessibilityService, "quoteReply", Toast.LENGTH_SHORT).show()
+//        }
+        if (text != null) {
             //Tạo sao lại cắt : đi
 //                if(text!!.split(":").count() > 1){
 //                    text = text!!.split(":")[1].trim()
 //                }
-                val rootNode = rootInActiveWindow
-                if (rootNode != null) {
-                    // Search for the node that contains the desired text
+//            GlobalScope.launch(Dispatchers.Main) {
+//                Toast.makeText(this@MyAccessibilityService, "text != null", Toast.LENGTH_SHORT).show()
+//            }
+            val rootNode = rootInActiveWindow
+            if (rootNode != null) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MyAccessibilityService, "rootNode != null", Toast.LENGTH_SHORT).show()
+                }
+                // Search for the node that contains the desired text
                 val targetNode = findNodeByText(rootNode, text)
                 if (targetNode != null) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        Toast.makeText(this@MyAccessibilityService, "targetNode != null", Toast.LENGTH_SHORT).show()
+                    }
                     val nodePosition = Rect()
                     targetNode.getBoundsInScreen(nodePosition)
                     val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
@@ -77,12 +94,12 @@ class MyAccessibilityService : AccessibilityService() {
 
                     var fromX = centerX
                     var toX = 100F
-                    if(config.swipeType == SWIPE_TYPE.RIGHT){
+                    if (config.swipeType == SWIPE_TYPE.RIGHT) {
                         fromX = 100F
                         toX = centerX
                     }
 
-                    Log.d(this.javaClass.simpleName , "********** Start swipe $packageName from $fromX to $toX duration $delayDuration" )
+                    Log.d(this.javaClass.simpleName, "********** Start swipe $packageName from $fromX to $toX duration $delayDuration")
                     performSwipe(
                         fromX,
                         centerY.toFloat(),
@@ -90,7 +107,7 @@ class MyAccessibilityService : AccessibilityService() {
                         centerY.toFloat(),
                         delayDuration
                     )
-                    GlobalScope.launch {
+                    GlobalScope.launch(Dispatchers.Main) {
                         delay(delayDuration * 2)
 
                         val inputNode = findInputField(rootNode)
@@ -103,8 +120,13 @@ class MyAccessibilityService : AccessibilityService() {
                         delay(delayDuration)
 
                         val btn = findButton(rootNode)
-                        Log.d(this.javaClass.simpleName , "********** Start click send")
-                        btn?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                        Log.d(this.javaClass.simpleName, "********** Start click send")
+                        btn?.let {
+                            it.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                            GlobalScope.launch(Dispatchers.Main) {
+                                Toast.makeText(this@MyAccessibilityService, "sendMessage", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             }
@@ -113,6 +135,7 @@ class MyAccessibilityService : AccessibilityService() {
 
     override fun onInterrupt() {
     }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         text = intent?.getStringExtra("text")
         replyText = intent?.getStringExtra("reply_text")
@@ -133,8 +156,8 @@ class MyAccessibilityService : AccessibilityService() {
         // Check if the current node contains the desired text
         val screenText = rootNode.text ?: rootNode.contentDescription
 //        Log.d("MyAccessibilityService", "Text: $screenText")
-        if (screenText!= null) {
-            if(screenText.split("\n").contains(cleanTextMatch))
+        if (screenText != null) {
+            if (screenText.split("\n").contains(cleanTextMatch))
                 return rootNode // Found the node with the matching text
         }
 
@@ -155,30 +178,33 @@ class MyAccessibilityService : AccessibilityService() {
             val clip = ClipData.newPlainText(getString(R.string.app_name), replyText)
             clipboard.setPrimaryClip(clip)
             node.performAction(AccessibilityNodeInfo.ACTION_PASTE)
+            GlobalScope.launch(Dispatchers.Main) {
+                Toast.makeText(this@MyAccessibilityService, "sendEnterKey", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun findButton(rootNode: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
-            if (rootNode == null) return null
-            for (i in 0 until rootNode.childCount) {
-                val childNode = rootNode.getChild(i)
-                // Look for an EditText (or any input field)
-                if (childNode != null) {
+        if (rootNode == null) return null
+        for (i in 0 until rootNode.childCount) {
+            val childNode = rootNode.getChild(i)
+            // Look for an EditText (or any input field)
+            if (childNode != null) {
 //                        Log.d("FIND_BUTTON", childNode?.className?.toString() ?:"")
 //                        Log.d("FIND_BUTTON", childNode?.contentDescription?.toString()?:"")
-                    if (childNode.className == config.className && config.contentDescription.contains(childNode.contentDescription)){
-                        return  childNode
-                    }
-                }
-
-                // Recursively search through all child nodes
-                val result = findButton(childNode)
-                if (result != null) {
-                    return result
+                if (childNode.className == config.className && config.contentDescription.contains(childNode.contentDescription)) {
+                    return childNode
                 }
             }
-            return null // No input field found
+
+            // Recursively search through all child nodes
+            val result = findButton(childNode)
+            if (result != null) {
+                return result
+            }
         }
+        return null // No input field found
+    }
 
     private fun findInputField(rootNode: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
         if (rootNode == null) return null
@@ -200,6 +226,7 @@ class MyAccessibilityService : AccessibilityService() {
         }
         return null // No input field found
     }
+
     private fun performSwipe(startX: Float, startY: Float, endX: Float, endY: Float, duration: Long) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             return
@@ -212,5 +239,8 @@ class MyAccessibilityService : AccessibilityService() {
         gestureBuilder.addStroke(strokeDescription)
         val gesture = gestureBuilder.build()
         dispatchGesture(gesture, null, null)
+        GlobalScope.launch(Dispatchers.Main) {
+            Toast.makeText(this@MyAccessibilityService, "performSwipe", Toast.LENGTH_SHORT).show()
+        }
     }
 }
