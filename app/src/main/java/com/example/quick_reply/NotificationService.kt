@@ -8,6 +8,9 @@ import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 
@@ -99,7 +102,10 @@ class NotificationService: NotificationListenerService() {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                    startForegroundService(intent)
 //                } else {
+                GlobalScope.launch {
+                    delay(200)
                     startService(intent)
+                }
 //                }
             }
         }
