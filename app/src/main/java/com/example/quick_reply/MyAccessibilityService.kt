@@ -24,20 +24,26 @@ import kotlinx.coroutines.withContext
 
 class MyAccessibilityService : AccessibilityService() {
 
-    var text: String? = null
-    var replyText: String? = null
-    var package_name: String? = null
-    lateinit var config: AppConfig
-    var isChecking = false
-    val delayDuration = 100L
+    companion object {
+        private const val MAX_ATTEMPT = 3
+    }
+
+    private var text: String? = null
+    private var replyText: String? = null
+    private var packageName: String? = null
+    private lateinit var config: AppConfig
+    private var isChecking = false
+    private val delayDuration = 100L
+    private var attemptCount = 0
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
 
     // Thời gian chờ để xác định đây là lần gọi cuối cùng
     private val debounceDelay = 50L
+
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (!isChecking || event?.packageName != package_name) {
+        if (!isChecking || event?.packageName != packageName) {
             return
         }
         if (lastEventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
@@ -55,6 +61,7 @@ class MyAccessibilityService : AccessibilityService() {
             Log.d("AccessibilityService", "Nội dung của $packageName đã thay đổi và hiển thị")
             GlobalScope.launch {
                 delay(delayDuration)
+                attemptCount = 0
                 quoteReply()
                 delay(delayDuration)
                 stopSelf()
@@ -63,6 +70,7 @@ class MyAccessibilityService : AccessibilityService() {
     }
 
     private suspend fun quoteReply() {
+        attemptCount++
         if (text != null) {
             val rootNode = rootInActiveWindow
             if (rootNode != null) {
@@ -105,6 +113,8 @@ class MyAccessibilityService : AccessibilityService() {
                         Log.d(this.javaClass.simpleName, "********** Start click send")
                         btnSendMessage?.performAction(AccessibilityNodeInfo.ACTION_CLICK) ?: onError("btnSendMessage is null")
                     }
+                } else if (attemptCount < MAX_ATTEMPT) {
+                    quoteReply()
                 } else {
                     onError("targetNode is null")
                 }
@@ -122,8 +132,8 @@ class MyAccessibilityService : AccessibilityService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         text = intent?.getStringExtra("text")
         replyText = intent?.getStringExtra("reply_text")
-        package_name = intent?.getStringExtra("package_name")
-        config = GetAppConfig(package_name ?: "")
+        packageName = intent?.getStringExtra("package_name")
+        config = GetAppConfig(packageName ?: "")
         isChecking = true
 //        quoteReply()
 //        stopSelf()
