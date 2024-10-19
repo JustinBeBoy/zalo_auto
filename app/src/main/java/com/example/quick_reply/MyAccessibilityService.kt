@@ -150,8 +150,7 @@ class MyAccessibilityService : AccessibilityService() {
         val screenText = rootNode.text ?: rootNode.contentDescription
 //        Log.d("MyAccessibilityService", "Text: $screenText")
         if (screenText != null) {
-            val lines = screenText.split("\n")
-            if (lines.contains(cleanTextMatch) && lines.any { it.matches(Regex("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\$")) })
+            if (screenText.split("\n").contains(cleanTextMatch))
                 return rootNode // Found the node with the matching text
         }
 
