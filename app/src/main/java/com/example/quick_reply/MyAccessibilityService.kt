@@ -10,20 +10,20 @@ import android.content.Intent
 import android.graphics.Path
 import android.graphics.Rect
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
-import androidx.core.view.accessibility.AccessibilityEventCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MyAccessibilityService : AccessibilityService() {
+
     var text: String? = null
     var replyText: String? = null
     var package_name: String? = null
@@ -54,43 +54,25 @@ class MyAccessibilityService : AccessibilityService() {
             isChecking = false
             Log.d("AccessibilityService", "Nội dung của $packageName đã thay đổi và hiển thị")
             GlobalScope.launch {
-                delay(delayDuration * 3)
+                delay(delayDuration)
                 quoteReply()
-                delay(5000)
+                delay(delayDuration)
                 stopSelf()
             }
         }
     }
 
-    fun quoteReply() {
-//        GlobalScope.launch(Dispatchers.Main) {
-//            Toast.makeText(this@MyAccessibilityService, "quoteReply", Toast.LENGTH_SHORT).show()
-//        }
+    private suspend fun quoteReply() {
         if (text != null) {
-            //Tạo sao lại cắt : đi
-//                if(text!!.split(":").count() > 1){
-//                    text = text!!.split(":")[1].trim()
-//                }
-//            GlobalScope.launch(Dispatchers.Main) {
-//                Toast.makeText(this@MyAccessibilityService, "text != null", Toast.LENGTH_SHORT).show()
-//            }
             val rootNode = rootInActiveWindow
             if (rootNode != null) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    Toast.makeText(this@MyAccessibilityService, "rootNode != null", Toast.LENGTH_SHORT).show()
-                }
                 // Search for the node that contains the desired text
                 val targetNode = findNodeByText(rootNode, text)
                 if (targetNode != null) {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        Toast.makeText(this@MyAccessibilityService, "targetNode != null", Toast.LENGTH_SHORT).show()
-                    }
                     val nodePosition = Rect()
                     targetNode.getBoundsInScreen(nodePosition)
                     val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
                     val centerY = (nodePosition.top + nodePosition.bottom) / 2
-                    val displayMetrics = resources.displayMetrics
-//                    val centerX = (displayMetrics.widthPixels - 100).toFloat()
 
                     var fromX = centerX
                     var toX = 100F
@@ -107,29 +89,30 @@ class MyAccessibilityService : AccessibilityService() {
                         centerY.toFloat(),
                         delayDuration
                     )
-                    GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         delay(delayDuration * 2)
 
                         val inputNode = findInputField(rootNode)
                         if (inputNode != null) {
-                            // Focus on the input field
-//                                inputNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
                             sendEnterKey(inputNode, replyText)
+                        } else {
+                            onError("inputNode is null")
                         }
 
                         delay(delayDuration)
 
-                        val btn = findButton(rootNode)
+                        val btnSendMessage = findButton(rootNode)
                         Log.d(this.javaClass.simpleName, "********** Start click send")
-                        btn?.let {
-                            it.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                            GlobalScope.launch(Dispatchers.Main) {
-                                Toast.makeText(this@MyAccessibilityService, "sendMessage", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        btnSendMessage?.performAction(AccessibilityNodeInfo.ACTION_CLICK) ?: onError("btnSendMessage is null")
                     }
+                } else {
+                    onError("targetNode is null")
                 }
+            } else {
+                onError("rootNode is null")
             }
+        } else {
+            onError("text is null")
         }
     }
 
@@ -178,9 +161,6 @@ class MyAccessibilityService : AccessibilityService() {
             val clip = ClipData.newPlainText(getString(R.string.app_name), replyText)
             clipboard.setPrimaryClip(clip)
             node.performAction(AccessibilityNodeInfo.ACTION_PASTE)
-            GlobalScope.launch(Dispatchers.Main) {
-                Toast.makeText(this@MyAccessibilityService, "sendEnterKey", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
@@ -239,8 +219,11 @@ class MyAccessibilityService : AccessibilityService() {
         gestureBuilder.addStroke(strokeDescription)
         val gesture = gestureBuilder.build()
         dispatchGesture(gesture, null, null)
+    }
+
+    private fun onError(message: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            Toast.makeText(this@MyAccessibilityService, "performSwipe", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MyAccessibilityService, message, Toast.LENGTH_SHORT).show()
         }
     }
 }
