@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 class MyAccessibilityService : AccessibilityService() {
 
     companion object {
-        private const val MAX_ATTEMPT = 3
+        private const val MAX_ATTEMPT = 10
     }
 
     private var text: String? = null
