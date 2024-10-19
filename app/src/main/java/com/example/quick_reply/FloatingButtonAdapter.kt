@@ -78,12 +78,12 @@ class FloatingButtonAdapter(
                 // Kiểm tra phiên bản Android
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                    val vibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
+                    val vibrationEffect = VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE)
                      vibrator = vibratorManager.getDefaultVibrator();
                     vibrator.vibrate(vibrationEffect)
                 } else {
                     vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    vibrator.vibrate(500)
+                    vibrator.vibrate(300)
                 }
 
 //                Timer().schedule(object : TimerTask() {

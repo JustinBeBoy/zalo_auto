@@ -106,7 +106,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // this effect creates the vibration of default amplitude for 1000ms(1 sec)
-                val vibrationEffect1 = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE);
+                val vibrationEffect1 = VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE);
                 // it is safe to cancel other vibrations currently taking place
                 vibrator = applicationContext.getSystemService(VIBRATOR_SERVICE) as Vibrator
                 vibrator?.cancel();
