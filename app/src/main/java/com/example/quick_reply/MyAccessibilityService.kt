@@ -140,12 +140,13 @@ class MyAccessibilityService : AccessibilityService() {
         val screenText = rootNode.text ?: rootNode.contentDescription
 //        Log.d("MyAccessibilityService", "Text: $screenText")
         if (screenText != null) {
-            if (screenText.split("\n").contains(cleanTextMatch))
+            val lines = screenText.split("\n")
+            if (lines.contains(cleanTextMatch) && lines.any { it.matches(Regex("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\$")) })
                 return rootNode // Found the node with the matching text
         }
 
         // Recursively search through all child nodes
-        for (i in 0 until rootNode.childCount) {
+        for (i in rootNode.childCount - 1 downTo 0) {
             val childNode = rootNode.getChild(i)
             val result = findNodeByText(childNode, textToMatch)
             if (result != null) {
