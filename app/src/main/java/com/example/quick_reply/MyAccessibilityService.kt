@@ -150,7 +150,7 @@ class MyAccessibilityService : AccessibilityService() {
         val screenText = rootNode.text ?: rootNode.contentDescription
 //        Log.d("MyAccessibilityService", "Text: $screenText")
         if (screenText != null) {
-            if (screenText.split("\n").contains(cleanTextMatch))
+            if (screenText.contains(cleanTextMatch))
                 return rootNode // Found the node with the matching text
         }
 
