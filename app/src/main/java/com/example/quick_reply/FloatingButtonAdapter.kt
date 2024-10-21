@@ -49,7 +49,7 @@ class FloatingButtonAdapter(
         val item = list[position]
 
         holder.title.text = item.title
-        holder.text.text = item.text
+        holder.text.text = item.text?.replace(Regex("(?m)^[ \t]*\r?\n"), "")
         holder.name.text = item.name
         holder.appIcon.setImageDrawable(context.packageManager.getApplicationIcon(item.packageName ?:""))
         holder.text.setOnClickListener {
