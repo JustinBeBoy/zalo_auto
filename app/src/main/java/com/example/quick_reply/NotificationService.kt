@@ -5,10 +5,13 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.annotation.RawRes
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,7 +50,7 @@ class NotificationService: NotificationListenerService() {
             // lọc tin nhắn nhóm
             if (uidSender != null) {
                 if (!uidSender.contains("group", ignoreCase = true)) {
-                    MediaPlayer.create(this, R.raw.sound_private_message).start()
+                    playRingtone(R.raw.sound_private_message)
                     return
                 }
             } else if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
@@ -60,7 +63,7 @@ class NotificationService: NotificationListenerService() {
                     //TODO: xử lý khi bấm vào chỉ mở app lên
                     return
                 } else {
-                    MediaPlayer.create(this, R.raw.sound_mention).start()
+                    playRingtone(R.raw.sound_mention)
                 }
             }
 
@@ -200,5 +203,16 @@ class NotificationService: NotificationListenerService() {
             }
         }
         return false
+    }
+
+    private fun playRingtone(@RawRes resId: Int) {
+        val audioAttributes = AudioAttributes.Builder()
+            .setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
+            .setLegacyStreamType(AudioManager.STREAM_RING)
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build()
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val s: Int = audioManager.generateAudioSessionId()
+        val mediaPlayer = MediaPlayer.create(this, resId, audioAttributes, s)
+        mediaPlayer.start()
     }
 }
