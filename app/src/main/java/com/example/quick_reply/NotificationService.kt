@@ -5,14 +5,13 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Timer
-import java.util.TimerTask
 
 class NotificationService: NotificationListenerService() {
     private val TAG = this.javaClass.simpleName
@@ -48,6 +47,7 @@ class NotificationService: NotificationListenerService() {
             // lọc tin nhắn nhóm
             if (uidSender != null) {
                 if (!uidSender.contains("group", ignoreCase = true)) {
+                    MediaPlayer.create(this, R.raw.sound_private_message).start()
                     return
                 }
             } else if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
