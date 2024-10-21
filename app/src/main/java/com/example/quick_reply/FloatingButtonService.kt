@@ -147,13 +147,13 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
 
         // Define layout parameters for the floating button
         val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY else WindowManager.LayoutParams.TYPE_PHONE,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         )
-        params.gravity = Gravity.TOP or Gravity.END // Position on screen
+        params.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL // Position on screen
         params.x = originalXPos
         params.y = originalYPos
 

@@ -51,7 +51,6 @@ class FloatingButtonAdapter(
         holder.title.text = item.title
         holder.text.text = item.text?.replace(Regex("(?m)^[ \t]*\r?\n"), "")
         holder.name.text = item.name
-        holder.appIcon.setImageDrawable(context.packageManager.getApplicationIcon(item.packageName ?:""))
         holder.text.setOnClickListener {
             try {
                 item.contentIntent?.send()
@@ -140,7 +139,6 @@ class FloatingButtonAdapter(
         val text = view.findViewById(R.id.floating_text) as TextView
         val name = view.findViewById(R.id.floating_name) as TextView
         val btn = view.findViewById(R.id.floating_button) as Button
-        val clear_btn = view.findViewById(R.id.clear_btn) as ImageButton
-        val appIcon = view.findViewById(R.id.f_app_icon) as ImageView
+        val clear_btn = view.findViewById(R.id.clear_btn) as ImageView
     }
 }
