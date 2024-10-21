@@ -56,9 +56,11 @@ class NotificationService: NotificationListenerService() {
 
             // loại bỏ tin nhắn chỉ có nguyên @all và cho qua tin nhắn có nhắc tới mình
             if (!convertText.matches(Regex("^(?!@all\$).*(?:@all.*|^[^@]*\$).*"))) {
-                if (!lowercaseNonAccentText.matches(Regex(".*nhac den ban.*"))){
+                if (!lowercaseNonAccentText.matches(Regex("(.|\\n)*nhac den ban(.|\\n)*"))) {
                     //TODO: xử lý khi bấm vào chỉ mở app lên
                     return
+                } else {
+                    MediaPlayer.create(this, R.raw.sound_mention).start()
                 }
             }
 
