@@ -9,18 +9,27 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Path
+import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.ImageView
 import android.widget.Toast
+import com.example.quick_reply.ext.dp2px
+import com.example.quick_reply.ext.goToPhoneHomeScreen
 import com.example.quick_reply.ext.playRingtone
 import com.example.quick_reply.ext.vibrate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,7 +41,9 @@ class MyAccessibilityService : AccessibilityService() {
     }
 
     private var text: String? = null
-    private var replyText: String? = null
+    private val replyText by lazy {
+        getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
+    }
     private var packageName: String? = null
     private lateinit var config: AppConfig
     private var isChecking = false
@@ -41,6 +52,7 @@ class MyAccessibilityService : AccessibilityService() {
     private var isAutoAccept = false
     private var isVoiceMessage = false
     private var contentIntent: PendingIntent? = null
+    private var jobHideQuickReplyButton: Job? = null
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
@@ -90,42 +102,7 @@ class MyAccessibilityService : AccessibilityService() {
                 // Search for the node that contains the desired text
                 val targetNode = findNodeByText(rootNode, text)
                 if (targetNode != null) {
-                    val nodePosition = Rect()
-                    targetNode.getBoundsInScreen(nodePosition)
-                    val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
-                    val centerY = (nodePosition.top + nodePosition.bottom) / 2
-
-                    var fromX = centerX
-                    var toX = 100F
-                    if (config.swipeType == SWIPE_TYPE.RIGHT) {
-                        fromX = 100F
-                        toX = centerX
-                    }
-
-                    Log.d(this.javaClass.simpleName, "********** Start swipe $packageName from $fromX to $toX duration $delayDuration")
-                    performSwipe(
-                        fromX,
-                        centerY.toFloat(),
-                        toX,
-                        centerY.toFloat(),
-                        delayDuration
-                    )
-                    withContext(Dispatchers.Main) {
-                        delay(delayDuration * 2)
-
-                        val inputNode = findInputField(rootNode)
-                        if (inputNode != null) {
-                            sendEnterKey(inputNode, replyText)
-                        } else {
-                            onError("inputNode is null")
-                        }
-
-                        delay(delayDuration)
-
-                        val btnSendMessage = findButton(rootNode)
-                        Log.d(this.javaClass.simpleName, "********** Start click send")
-                        btnSendMessage?.performAction(AccessibilityNodeInfo.ACTION_CLICK) ?: onError("btnSendMessage is null")
-                    }
+                    reply(rootNode, targetNode)
                 } else if (attemptCount < MAX_ATTEMPT) {
                     quoteReply()
                 } else {
@@ -139,12 +116,50 @@ class MyAccessibilityService : AccessibilityService() {
         }
     }
 
+    private suspend fun reply(rootNode: AccessibilityNodeInfo, targetNode: AccessibilityNodeInfo) {
+        val nodePosition = Rect()
+        targetNode.getBoundsInScreen(nodePosition)
+        val centerX = ((nodePosition.left + nodePosition.right) / 2).toFloat()
+        val centerY = (nodePosition.top + nodePosition.bottom) / 2
+
+        var fromX = centerX
+        var toX = 100F
+        if (config.swipeType == SWIPE_TYPE.RIGHT) {
+            fromX = 100F
+            toX = centerX
+        }
+
+        Log.d(this.javaClass.simpleName, "********** Start swipe $packageName from $fromX to $toX duration $delayDuration")
+        performSwipe(
+            fromX,
+            centerY.toFloat(),
+            toX,
+            centerY.toFloat(),
+            delayDuration
+        )
+        withContext(Dispatchers.Main) {
+            delay(delayDuration * 2)
+
+            val inputNode = findInputField(rootNode)
+            if (inputNode != null) {
+                sendEnterKey(inputNode, replyText)
+            } else {
+                onError("inputNode is null")
+            }
+
+            delay(delayDuration)
+
+            val btnSendMessage = findButton(rootNode)
+            Log.d(this.javaClass.simpleName, "********** Start click send")
+            btnSendMessage?.performAction(AccessibilityNodeInfo.ACTION_CLICK) ?: onError("btnSendMessage is null")
+        }
+    }
+
     override fun onInterrupt() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         text = intent?.getStringExtra("text")
-        replyText = intent?.getStringExtra("reply_text")
         packageName = intent?.getStringExtra("package_name")
         config = GetAppConfig(packageName ?: "")
         isChecking = true
@@ -263,7 +278,88 @@ class MyAccessibilityService : AccessibilityService() {
         if (rootInActiveWindow.packageName != packageName) {
             isChecking = false
             contentIntent?.send()
+            showReplyView()
+        } else {
+            stopSelf()
         }
+    }
+
+    private fun showReplyView() {
+        val windowManager = getSystemService(WINDOW_SERVICE) as? WindowManager ?: return
+        val replyView = LayoutInflater.from(this).inflate(R.layout.reply_view, null)
+        val ivReply = replyView.findViewById<ImageView>(R.id.ivReply)
+        ivReply.setOnClickListener {
+            cancelJobHideQuickReplyButton()
+            handler.post { windowManager.removeView(replyView) }
+            replyVoiceMessage()
+        }
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+
+        // Define layout parameters for the floating button
+        val params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY else WindowManager.LayoutParams.TYPE_PHONE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            PixelFormat.TRANSLUCENT
+        )
+        params.width = dp2px(64f).toInt()
+        params.height = dp2px(64f).toInt()
+        params.gravity = Gravity.TOP or Gravity.END // Position on screen
+        params.x = dp2px(32f).toInt()
+        params.y = height / 3
+
+        // Add the view to the WindowManager
+        windowManager.addView(replyView, params)
+
+        cancelJobHideQuickReplyButton()
+        jobHideQuickReplyButton = GlobalScope.launch {
+            delay(30000)
+            handler.post { windowManager.removeView(replyView) }
+            delay(delayDuration)
+            goToPhoneHomeScreen()
+            stopSelf()
+        }
+    }
+
+    private fun cancelJobHideQuickReplyButton() {
+        jobHideQuickReplyButton?.takeIf { it.isActive }?.cancel()
+        jobHideQuickReplyButton = null
+    }
+
+    private fun replyVoiceMessage() = GlobalScope.launch {
+        delay(delayDuration)
+        val rootNode = rootInActiveWindow
+        val targetNode = findLastMessage(rootNode)
+        if (targetNode == null) {
+            onError("Last message not found")
+            stopSelf()
+            return@launch
+        }
+        reply(rootNode, targetNode)
+        delay(delayDuration)
         stopSelf()
+    }
+
+    private fun findLastMessage(rootNode: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
+        if (rootNode == null) return null
+        val screenText = rootNode.text ?: rootNode.contentDescription
+        if (screenText != null) {
+            val lines = screenText.split("\n")
+            if (lines.any { it.matches(Regex("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\$")) })
+                return rootNode
+        }
+        // Recursively search through all child nodes
+        for (i in rootNode.childCount - 1 downTo 0) {
+            val childNode = rootNode.getChild(i)
+            val result = findLastMessage(childNode)
+            if (result != null) {
+                return result // Return the node if found
+            }
+        }
+        return null // Node with the matching text not found
     }
 }

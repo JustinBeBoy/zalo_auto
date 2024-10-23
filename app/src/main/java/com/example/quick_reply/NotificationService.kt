@@ -209,11 +209,8 @@ class NotificationService: NotificationListenerService() {
         if ((title?.contains("nhóm") == true || (title?.indexOf(":") ?: -1) > -1) && index > -1) {
             formattedText = text.substring(index + 1)
         }
-        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
         val swipeIntent = Intent(this, MyAccessibilityService::class.java)
         swipeIntent.putExtra("text", formattedText)
-        swipeIntent.putExtra("reply_text", replyText)
         swipeIntent.putExtra("package_name", packageName)
         swipeIntent.putExtra("is_auto_accept", true)
         startService(swipeIntent)

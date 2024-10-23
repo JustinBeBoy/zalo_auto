@@ -1,6 +1,7 @@
 package com.example.quick_reply.ext
 
 import android.content.Context
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -32,4 +33,15 @@ fun Context.playRingtone(@RawRes resId: Int) {
     val s: Int = audioManager.generateAudioSessionId()
     val mediaPlayer = MediaPlayer.create(this, resId, audioAttributes, s)
     mediaPlayer.start()
+}
+
+fun Context.dp2px(dp: Float): Float {
+    return dp * resources.displayMetrics.density
+}
+
+fun Context.goToPhoneHomeScreen() {
+    val intent = Intent(Intent.ACTION_MAIN)
+    intent.addCategory(Intent.CATEGORY_HOME)
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(intent)
 }

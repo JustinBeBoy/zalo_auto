@@ -92,7 +92,6 @@ class FloatingButtonAdapter(
                             MyAccessibilityService::class.java
                         )
                         swipeIntent.putExtra("text", item.text)
-                        swipeIntent.putExtra("reply_text", item.replyText)
                         swipeIntent.putExtra("package_name", item.packageName)
                         context.startService(swipeIntent)
 //                    }
