@@ -59,7 +59,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
             val sharedPreferences = this.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
             val quoteReply = sharedPreferences.getBoolean(QUOTE_REPLY_KEY, false)
-            val speechNoti = sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true)
+            val speechNoti = sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true) && !intent.getBooleanExtra("is_disabled_speech", false)
             speechSpeed = sharedPreferences.getFloat(SPEECH_SPEED_KEY, 1.5f)
 
             // Get the reply PendingIntent

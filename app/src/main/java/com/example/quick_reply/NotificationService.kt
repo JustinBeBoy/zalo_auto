@@ -39,6 +39,7 @@ class NotificationService: NotificationListenerService() {
             val convertText = convertToLowercaseNonAccent(cleanText)
             val uidSender: String? = extras?.getString("extra_notification_uid_sender")
             val lowercaseNonAccentText = convertToLowercaseNonAccent(text.toString())
+            var isDisabledSpeech = false
 
 
             Log.d( TAG , "********** onNotificationPosted" )
@@ -64,6 +65,7 @@ class NotificationService: NotificationListenerService() {
                     return
                 } else {
                     playRingtone(R.raw.sound_mention)
+                    isDisabledSpeech = true
                 }
             }
 
@@ -104,6 +106,9 @@ class NotificationService: NotificationListenerService() {
                 intent.putExtra("reply_intent", replyPendingIntent)
                 intent.putExtra("content_intent", sbn.notification.contentIntent)
                 intent.putExtra("reply_key", replyKey)
+                if (isDisabledSpeech) {
+                    intent.putExtra("is_disabled_speech", true)
+                }
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                    startForegroundService(intent)
 //                } else {
