@@ -12,12 +12,17 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RawRes
+import com.example.quick_reply.repo.MainRepo
+import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class NotificationService: NotificationListenerService() {
+
     private val TAG = this.javaClass.simpleName
+    private val mainRepo: MainRepo by inject()
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
@@ -55,6 +60,11 @@ class NotificationService: NotificationListenerService() {
                     return
                 }
             } else if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
+                return
+            }
+
+            // Ignores exclusion list
+            if (mainRepo.getExclusionList().any { lowercaseNonAccentText.matches(Regex(it)) }) {
                 return
             }
 
@@ -124,33 +134,6 @@ class NotificationService: NotificationListenerService() {
     private fun openApp(intent: PendingIntent) {
         // Open the app associated with the package name
         intent.send()
-    }
-
-    private fun convertToLowercaseNonAccent(text: String): String {
-        // Chuyển các ký tự có dấu thành dạng cơ bản không dấu
-        val normalizedText = noAccentVietnamese(text)
-        // Chuyển toàn bộ văn bản thành chữ thường
-        return normalizedText.lowercase()
-    }
-
-    private fun noAccentVietnamese(text: String): String {
-        // Tạo chuỗi chứa tất cả các ký tự tiếng Việt có dấu
-        val intab = "ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđẠẢÃÀÁÂẬẦẤẨẪĂẮẰẶẲẴÓÒỌÕỎÔỘỔỖỒỐƠỜỚỢỞỠÉÈẺẸẼÊẾỀỆỂỄÚÙỤỦŨƯỰỮỬỪỨÍÌỊỈĨÝỲỶỴỸĐ"
-
-        // Tạo chuỗi thay thế tương ứng các ký tự không dấu
-        val outtab = "a".repeat(17) + "o".repeat(17) + "e".repeat(11) + "u".repeat(11) + "i".repeat(5) + "y".repeat(5) + "d" +
-                "A".repeat(17) + "O".repeat(17) + "E".repeat(11) + "U".repeat(11) + "I".repeat(5) + "Y".repeat(5) + "D"
-
-        // Tạo map để ánh xạ từ ký tự có dấu sang không dấu
-        val replacesDict = intab.zip(outtab).toMap()
-
-        // Thay thế các ký tự có dấu trong chuỗi bằng ký tự không dấu
-        val result = StringBuilder()
-        for (char in text) {
-            result.append(replacesDict[char] ?: char)  // Nếu ký tự không có trong map thì giữ nguyên
-        }
-
-        return result.toString()
     }
 
     private fun getReplyPendingIntent(notification: Notification?): Pair<PendingIntent?, String?> {
