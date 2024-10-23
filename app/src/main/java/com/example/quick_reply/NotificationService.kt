@@ -102,18 +102,19 @@ class NotificationService: NotificationListenerService() {
 //            sbn.notification.contentIntent?.send()
 
             // Auto accept
-            if (mainRepo.getAutoAcceptList().any { lowercaseNonAccentText.matches(Regex(it)) }) {
-                GlobalScope.launch {
-                    delay(200)
-                    try {
-                        sbn.notification.contentIntent.send()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    autoAccept(title?.toString(), text?.toString().orEmpty(), sbn.packageName)
-                }
-                return
-            }
+            // TODO: tạm tắt chờ lên v2 mới bật
+//            if (mainRepo.getAutoAcceptList().any { lowercaseNonAccentText.matches(Regex(it)) }) {
+//                GlobalScope.launch {
+//                    delay(200)
+//                    try {
+//                        sbn.notification.contentIntent.send()
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                    autoAccept(title?.toString(), text?.toString().orEmpty(), sbn.packageName)
+//                }
+//                return
+//            }
 
             val (replyPendingIntent, replyKey) = getReplyPendingIntent(sbn?.notification)
             if (replyPendingIntent != null) {
