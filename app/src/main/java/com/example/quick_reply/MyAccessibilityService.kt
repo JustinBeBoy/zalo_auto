@@ -3,6 +3,7 @@ package com.example.quick_reply
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
+import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -16,6 +17,8 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
+import com.example.quick_reply.ext.playRingtone
+import com.example.quick_reply.ext.vibrate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -35,6 +38,9 @@ class MyAccessibilityService : AccessibilityService() {
     private var isChecking = false
     private val delayDuration = 100L
     private var attemptCount = 0
+    private var isAutoAccept = false
+    private var isVoiceMessage = false
+    private var contentIntent: PendingIntent? = null
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
@@ -43,6 +49,9 @@ class MyAccessibilityService : AccessibilityService() {
     private val debounceDelay = 50L
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        if (isVoiceMessage) {
+            return
+        }
         if (!isChecking || event?.packageName != packageName) {
             return
         }
@@ -64,6 +73,10 @@ class MyAccessibilityService : AccessibilityService() {
                 attemptCount = 0
                 quoteReply()
                 delay(delayDuration)
+                if (isAutoAccept) {
+                    playRingtone(R.raw.sound_auto_accept)
+                    applicationContext.vibrate(6000)
+                }
                 stopSelf()
             }
         }
@@ -135,6 +148,12 @@ class MyAccessibilityService : AccessibilityService() {
         packageName = intent?.getStringExtra("package_name")
         config = GetAppConfig(packageName ?: "")
         isChecking = true
+        intent?.getBooleanExtra("is_auto_accept", false)?.let { isAutoAccept = it }
+        intent?.getBooleanExtra("is_voice_message", false)?.let { isVoiceMessage = it }
+        contentIntent = intent?.getParcelableExtra("content_intent")
+        if (isVoiceMessage) {
+            handleVoiceMessage()
+        }
 //        quoteReply()
 //        stopSelf()
         return START_NOT_STICKY
@@ -235,5 +254,16 @@ class MyAccessibilityService : AccessibilityService() {
         GlobalScope.launch(Dispatchers.Main) {
             Toast.makeText(this@MyAccessibilityService, message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun handleVoiceMessage() {
+        if (!isChecking) {
+            return
+        }
+        if (rootInActiveWindow.packageName != packageName) {
+            isChecking = false
+            contentIntent?.send()
+        }
+        stopSelf()
     }
 }

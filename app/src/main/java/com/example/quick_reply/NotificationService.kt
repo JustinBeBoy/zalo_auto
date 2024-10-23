@@ -5,13 +5,10 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.MediaPlayer
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import androidx.annotation.RawRes
+import com.example.quick_reply.ext.playRingtone
 import com.example.quick_reply.repo.MainRepo
 import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
 import kotlinx.coroutines.GlobalScope
@@ -97,13 +94,26 @@ class NotificationService: NotificationListenerService() {
 
             // xử lý gửi tin nhắn thoại
             if (convertText.matches(Regex(".*tin nhan thoai.*"))) {
-                //TODO: xử lý bật app lên
-                sbn.notification.contentIntent?.send()
+                handleVoiceMessage(sbn)
                 return
             }
 
             // test open app
 //            sbn.notification.contentIntent?.send()
+
+            // Auto accept
+            if (mainRepo.getAutoAcceptList().any { lowercaseNonAccentText.matches(Regex(it)) }) {
+                GlobalScope.launch {
+                    delay(200)
+                    try {
+                        sbn.notification.contentIntent.send()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    autoAccept(title?.toString(), text?.toString().orEmpty(), sbn.packageName)
+                }
+                return
+            }
 
             val (replyPendingIntent, replyKey) = getReplyPendingIntent(sbn?.notification)
             if (replyPendingIntent != null) {
@@ -193,14 +203,27 @@ class NotificationService: NotificationListenerService() {
         return false
     }
 
-    private fun playRingtone(@RawRes resId: Int) {
-        val audioAttributes = AudioAttributes.Builder()
-            .setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
-            .setLegacyStreamType(AudioManager.STREAM_RING)
-            .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build()
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val s: Int = audioManager.generateAudioSessionId()
-        val mediaPlayer = MediaPlayer.create(this, resId, audioAttributes, s)
-        mediaPlayer.start()
+    private fun autoAccept(title: String?, text: String, packageName: String) {
+        var formattedText = text
+        val index = text.indexOf(":")
+        if ((title?.contains("nhóm") == true || (title?.indexOf(":") ?: -1) > -1) && index > -1) {
+            formattedText = text.substring(index + 1)
+        }
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
+        val swipeIntent = Intent(this, MyAccessibilityService::class.java)
+        swipeIntent.putExtra("text", formattedText)
+        swipeIntent.putExtra("reply_text", replyText)
+        swipeIntent.putExtra("package_name", packageName)
+        swipeIntent.putExtra("is_auto_accept", true)
+        startService(swipeIntent)
+    }
+
+    private fun handleVoiceMessage(sbn: StatusBarNotification?) {
+        val swipeIntent = Intent(this, MyAccessibilityService::class.java)
+        swipeIntent.putExtra("is_voice_message", true)
+        swipeIntent.putExtra("content_intent", sbn?.notification?.contentIntent)
+        swipeIntent.putExtra("package_name", sbn?.packageName)
+        startService(swipeIntent)
     }
 }

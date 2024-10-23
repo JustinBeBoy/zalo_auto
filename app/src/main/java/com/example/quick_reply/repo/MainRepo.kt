@@ -27,7 +27,7 @@ class MainRepo {
 
     fun getAutoAcceptList(): List<String> {
         return listOf(
-            "*đà lạt*Nha trang*"
+            "*đà lạt*Nha trang*"
         ).format()
     }
 
