@@ -1,8 +1,10 @@
 package com.example.quick_reply.di
 
-import com.example.quick_reply.repo.MainRepo
+import com.example.quick_reply.data.local.MainSharedPreferences
+import com.example.quick_reply.data.repo.MainRepo
 import org.koin.dsl.module
 
 val repoModule = module {
-    single { MainRepo() }
+    single { MainSharedPreferences(get()) }
+    single { MainRepo(get()) }
 }

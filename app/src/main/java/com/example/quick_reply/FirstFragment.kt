@@ -1,25 +1,23 @@
 package com.example.quick_reply
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.quick_reply.data.local.MainSharedPreferences
 import com.example.quick_reply.databinding.FragmentFirstBinding
 import com.google.android.material.slider.Slider
-
+import org.koin.android.ext.android.inject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,6 +32,7 @@ class FirstFragment : Fragment(){
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val mainSharedPreferences: MainSharedPreferences by inject()
 
     var appIds = setOf("com.zing.zalo","com.facebook.orca","org.thunderdog.challegram", "org.telegram.messenger")
 
@@ -76,6 +75,9 @@ class FirstFragment : Fragment(){
         binding.root.findViewById<Slider>(R.id.speech_speed).addOnChangeListener { _, value, _ ->
             binding.root.findViewById<TextView>(R.id.speed_text).text = "Speech speed: $value"
         }
+        binding.cbSkipPleaseChange.isChecked = mainSharedPreferences.isSkipPleaseChange()
+        binding.cbSkip7Seats.isChecked = mainSharedPreferences.isSkip7Seats()
+        binding.cbEnabledQuickReplyButton.isChecked = mainSharedPreferences.isEnabledQuickReplyButton()
 //        binding.root.findViewById<EditText>(R.id.regex_title).setText(filterRegexTitle)
 //        binding.root.findViewById<EditText>(R.id.regex_text).setText(filterRegexText)
 
@@ -107,6 +109,9 @@ class FirstFragment : Fragment(){
 //        editor.putString(FILTER_REGEX_TITLE_KEY, binding.root.findViewById<EditText>(R.id.regex_title).text.toString())
 //        editor.putString(FILTER_REGEX_TEXT_KEY, binding.root.findViewById<EditText>(R.id.regex_text).text.toString())
         editor.apply()
+        mainSharedPreferences.setSkipPleaseChange(binding.cbSkipPleaseChange.isChecked)
+        mainSharedPreferences.setSkip7Seats(binding.cbSkip7Seats.isChecked)
+        mainSharedPreferences.setEnabledQuickReplyButton(binding.cbEnabledQuickReplyButton.isChecked)
 
         Toast.makeText(this.requireContext(), "Filter apps saved!", Toast.LENGTH_SHORT).show()
     }

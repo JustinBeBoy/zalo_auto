@@ -23,6 +23,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.ImageView
 import android.widget.Toast
+import com.example.quick_reply.data.local.MainSharedPreferences
 import com.example.quick_reply.ext.dp2px
 import com.example.quick_reply.ext.goToPhoneHomeScreen
 import com.example.quick_reply.ext.playRingtone
@@ -33,6 +34,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 class MyAccessibilityService : AccessibilityService() {
 
@@ -53,6 +55,7 @@ class MyAccessibilityService : AccessibilityService() {
     private var isVoiceMessage = false
     private var contentIntent: PendingIntent? = null
     private var jobHideQuickReplyButton: Job? = null
+    private val mainSharedPreferences: MainSharedPreferences by inject()
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastEventType: Int? = null
@@ -285,6 +288,10 @@ class MyAccessibilityService : AccessibilityService() {
     }
 
     private fun showReplyView() {
+        if (!mainSharedPreferences.isEnabledQuickReplyButton()) {
+            stopSelf()
+            return
+        }
         val windowManager = getSystemService(WINDOW_SERVICE) as? WindowManager ?: return
         val replyView = LayoutInflater.from(this).inflate(R.layout.reply_view, null)
         val ivReply = replyView.findViewById<ImageView>(R.id.ivReply)

@@ -9,7 +9,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.example.quick_reply.ext.playRingtone
-import com.example.quick_reply.repo.MainRepo
+import com.example.quick_reply.data.repo.MainRepo
 import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

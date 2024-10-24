@@ -9,5 +9,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
+    <string name="skip_please_change">Bỏ qua: xin / đổi</string>
+    <string name="skip_7_seats">Bỏ qua: 7 chỗ</string>
+    <string name="enable_quick_reply_button">Bật nút trả lời nhanh</string>
 </resources>

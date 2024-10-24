@@ -90,6 +90,34 @@
                                     android:layout_height="wrap_content"
                                     android:text="Speech Notification"/>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                                <CheckBox
+                                    android:id="@+id/cbSkipPleaseChange"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/skip_please_change"/>
+                                <CheckBox
+                                    android:id="@+id/cbSkip7Seats"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/skip_7_seats"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                                <CheckBox
+                                    android:id="@+id/cbEnabledQuickReplyButton"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/enable_quick_reply_button"/>
+                        </LinearLayout>
                         <TextView
                             android:id="@+id/speed_text"
                             android:layout_marginTop="10dp"
