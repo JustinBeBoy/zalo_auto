@@ -7,19 +7,48 @@ import android.content.Context
 import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.speech.tts.TextToSpeech
 import android.util.Log
-import com.example.quick_reply.ext.playRingtone
 import com.example.quick_reply.data.repo.MainRepo
+import com.example.quick_reply.ext.playRingtone
 import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.util.Locale
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
-class NotificationService: NotificationListenerService() {
+class NotificationService: NotificationListenerService(), TextToSpeech.OnInitListener {
 
     private val TAG = this.javaClass.simpleName
     private val mainRepo: MainRepo by inject()
+    private var speechSpeed: Float = 1.5f
+    private var textToSpeech: TextToSpeech? = null
+    private var textToSpeechStatus = AtomicInteger(-1)
+    private var hasPendingSpeechText = AtomicBoolean(false)
+    private var pendingSpeechText = ""
+
+    override fun onCreate() {
+        super.onCreate()
+        textToSpeech = TextToSpeech(this, this)
+    }
+
+    override fun onInit(status: Int) {
+        textToSpeechStatus.set(status)
+        if (status == TextToSpeech.SUCCESS && hasPendingSpeechText.compareAndSet(true, false)) {
+            speak(pendingSpeechText)
+            pendingSpeechText = ""
+        }
+    }
+
+    private fun speak(speechText: String) {
+        // Set language if necessary
+        textToSpeech?.setLanguage(Locale("vi","VN"))
+        textToSpeech?.setSpeechRate(speechSpeed)
+        textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
@@ -116,6 +145,29 @@ class NotificationService: NotificationListenerService() {
 //                return
 //            }
 
+            if (!isDisabledSpeech && sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true)) {
+                if (textToSpeech == null || textToSpeechStatus.get() != TextToSpeech.SUCCESS) {
+                    textToSpeech = TextToSpeech(this, this)
+                }
+                speechSpeed = sharedPreferences.getFloat(SPEECH_SPEED_KEY, 1.5f)
+                var speechText = text?.toString().orEmpty()
+                val index = speechText.indexOf(":")
+                val speechTitle = title?.toString()
+                if ((speechTitle?.contains("nhóm") == true || (speechTitle?.indexOf(":") ?: -1) > -1) && index > -1) {
+                    speechText = speechText.substring(index + 1)
+                }
+                speechText = speechText.replace("@All", "")
+                if (textToSpeech?.isSpeaking == true) {
+                    textToSpeech?.stop()
+                }
+                if (textToSpeechStatus.get() == TextToSpeech.SUCCESS) {
+                    speak(speechText)
+                } else {
+                    pendingSpeechText = speechText
+                    hasPendingSpeechText.set(true)
+                }
+            }
+
             val (replyPendingIntent, replyKey) = getReplyPendingIntent(sbn?.notification)
             if (replyPendingIntent != null) {
 
@@ -127,9 +179,6 @@ class NotificationService: NotificationListenerService() {
                 intent.putExtra("reply_intent", replyPendingIntent)
                 intent.putExtra("content_intent", sbn.notification.contentIntent)
                 intent.putExtra("reply_key", replyKey)
-                if (isDisabledSpeech) {
-                    intent.putExtra("is_disabled_speech", true)
-                }
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                    startForegroundService(intent)
 //                } else {

@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.speech.tts.TextToSpeech
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -23,20 +22,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import java.util.UUID
 
+class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListener {
 
-class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListener,
-    TextToSpeech.OnInitListener {
     private var windowManager: WindowManager? = null
     private var floatingButtonView: View? = null
     private lateinit var listView: RecyclerView
     private lateinit var adapter: FloatingButtonAdapter
     private val listFloatingBtn = mutableListOf<FloatingInfo>()
-
-    var speechText : String = ""
-    var speechSpeed : Float = 1.5f
 
     private var offsetX = 0f
     private var offsetY = 0f
@@ -44,7 +38,6 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
     private var originalYPos = 400
     private var moving = false
 
-    private var textToSpeech: TextToSpeech? = null
     var vibrator: Vibrator? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -59,8 +52,6 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
             val sharedPreferences = this.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val replyText = sharedPreferences.getString(REPLY_TEXT_KEY, "Reply from QuickReply App")
             val quoteReply = sharedPreferences.getBoolean(QUOTE_REPLY_KEY, false)
-            val speechNoti = sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true) && !intent.getBooleanExtra("is_disabled_speech", false)
-            speechSpeed = sharedPreferences.getFloat(SPEECH_SPEED_KEY, 1.5f)
 
             // Get the reply PendingIntent
             val replyPendingIntent : PendingIntent? = intent.getParcelableExtra("reply_intent")
@@ -94,14 +85,6 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
                 withContext(Dispatchers.Main) {
                     removeItemWithKey(key)
                 }
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && speechNoti) {
-                speechText = text.replace("@All", "")
-                if (textToSpeech != null) {
-                    textToSpeech?.stop();       // Stops the current speech
-                    textToSpeech?.shutdown();   // Completely shuts down the TTS engine
-                }
-                textToSpeech = TextToSpeech(this, this)
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -210,16 +193,5 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
 
     override fun onClick(v: View?) {
         Toast.makeText(this, "Overlay button click event", Toast.LENGTH_SHORT).show();
-    }
-
-    override fun onInit(status: Int) {
-        if (status == TextToSpeech.SUCCESS) {
-            // Set language if necessary
-            textToSpeech?.setLanguage(Locale("vi","VN"))
-            textToSpeech?.setSpeechRate(speechSpeed)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null)
-            };
-        }
     }
 }
