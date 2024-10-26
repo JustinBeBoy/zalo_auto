@@ -12,4 +12,6 @@
     <string name="skip_please_change">Bỏ qua: xin / đổi</string>
     <string name="skip_7_seats">Bỏ qua: 7 chỗ</string>
     <string name="enable_quick_reply_button">Bật nút trả lời nhanh</string>
+    <string name="enable_accessibility_service">Bật trợ năng quick_reply</string>
+    <string name="disable_accessibility_service">Tắt trợ năng quick_reply</string>
 </resources>

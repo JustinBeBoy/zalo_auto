@@ -5,13 +5,19 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import com.example.quick_reply.data.repo.MainRepo
+import com.example.quick_reply.ext.isAccessibilityServiceEnabled
 import com.example.quick_reply.ext.playRingtone
 import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
+import com.example.toastlib.KoushikToast
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,10 +35,34 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
     private var textToSpeechStatus = AtomicInteger(-1)
     private var hasPendingSpeechText = AtomicBoolean(false)
     private var pendingSpeechText = ""
+    private var isEnabledAccessibilityService = false
+    private val lock = Any()
+    private var observer = object : ContentObserver(Handler(Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            synchronized(lock) {
+                val newStatus = isAccessibilityServiceEnabled(MyAccessibilityService::class.java)
+                if (newStatus == isEnabledAccessibilityService) {
+                    return
+                }
+                isEnabledAccessibilityService = newStatus
+                val messageResId = when {
+                    newStatus -> R.string.enable_accessibility_service
+                    else -> R.string.disable_accessibility_service
+                }
+                Handler(Looper.getMainLooper()).post {
+                    KoushikToast.makeText(this@NotificationService, applicationContext.getString(messageResId), 1).show()
+                }
+            }
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
+        isEnabledAccessibilityService = isAccessibilityServiceEnabled(MyAccessibilityService::class.java)
         textToSpeech = TextToSpeech(this, this)
+        val uri = Settings.Secure.getUriFor(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+        contentResolver.registerContentObserver(uri, false, observer)
     }
 
     override fun onInit(status: Int) {

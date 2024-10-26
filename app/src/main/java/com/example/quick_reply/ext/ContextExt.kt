@@ -1,5 +1,7 @@
 package com.example.quick_reply.ext
 
+import android.accessibilityservice.AccessibilityService
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
@@ -9,6 +11,8 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.provider.Settings
+import android.text.TextUtils
 import androidx.annotation.RawRes
 
 fun Context.vibrate(milliseconds: Long) {
@@ -44,4 +48,22 @@ fun Context.goToPhoneHomeScreen() {
     intent.addCategory(Intent.CATEGORY_HOME)
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
+}
+
+fun Context.isAccessibilityServiceEnabled(accessibilityService: Class<out AccessibilityService>): Boolean {
+    val expectedComponentName = ComponentName(this, accessibilityService)
+    val enabledServices = Settings.Secure.getString(
+        contentResolver,
+        Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+    ) ?: return false
+
+    val colonSplitter = TextUtils.SimpleStringSplitter(':')
+    colonSplitter.setString(enabledServices)
+    while (colonSplitter.hasNext()) {
+        val componentName = colonSplitter.next()
+        if (componentName.equals(expectedComponentName.flattenToString(), ignoreCase = true)) {
+            return true
+        }
+    }
+    return false
 }
