@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.ui.first
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,12 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.quick_reply.R
+import com.example.quick_reply.data.entity.AppInfo
 
 class AppListAdapter(
     private val appsList: List<AppInfo>
-) : RecyclerView.Adapter<AppListAdapter.ViewHolder>(){
+) : RecyclerView.Adapter<AppListAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return appsList.count()
@@ -33,7 +35,7 @@ class AppListAdapter(
         }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemName = view.findViewById(R.id.app_name) as TextView
         val itemImage = view.findViewById(R.id.app_icon) as ImageView
         val itemCheck = view.findViewById(R.id.checkbox) as CheckBox

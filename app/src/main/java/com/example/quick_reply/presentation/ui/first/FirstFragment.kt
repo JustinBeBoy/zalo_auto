@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.ui.first
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -14,6 +14,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.quick_reply.R
+import com.example.quick_reply.data.entity.AppInfo
+import com.example.quick_reply.data.entity.CHECKED_APPS_KEY
+import com.example.quick_reply.data.entity.PREFS_NAME
+import com.example.quick_reply.data.entity.QUOTE_REPLY_KEY
+import com.example.quick_reply.data.entity.REPLY_TEXT_KEY
+import com.example.quick_reply.data.entity.SPEECH_NOTI_KEY
+import com.example.quick_reply.data.entity.SPEECH_SPEED_KEY
 import com.example.quick_reply.data.local.MainSharedPreferences
 import com.example.quick_reply.databinding.FragmentFirstBinding
 import com.google.android.material.slider.Slider
@@ -22,7 +30,7 @@ import org.koin.android.ext.android.inject
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment(){
+class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private lateinit var listView: RecyclerView
@@ -34,11 +42,11 @@ class FirstFragment : Fragment(){
     private val binding get() = _binding!!
     private val mainSharedPreferences: MainSharedPreferences by inject()
 
-    var appIds = setOf("com.zing.zalo","com.facebook.orca","org.thunderdog.challegram", "org.telegram.messenger")
+    var appIds = setOf("com.zing.zalo", "com.facebook.orca", "org.thunderdog.challegram", "org.telegram.messenger")
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         listView = binding.root.findViewById(R.id.all_apps)
@@ -105,7 +113,7 @@ class FirstFragment : Fragment(){
         editor.putString(REPLY_TEXT_KEY, replyText.toString())
         editor.putBoolean(QUOTE_REPLY_KEY, binding.root.findViewById<CheckBox>(R.id.quote_reply).isChecked)
         editor.putFloat(SPEECH_SPEED_KEY, binding.root.findViewById<Slider>(R.id.speech_speed).value)
-        editor.putBoolean(SPEECH_NOTI_KEY,  binding.root.findViewById<CheckBox>(R.id.speech_notifcation).isChecked)
+        editor.putBoolean(SPEECH_NOTI_KEY, binding.root.findViewById<CheckBox>(R.id.speech_notifcation).isChecked)
 //        editor.putString(FILTER_REGEX_TITLE_KEY, binding.root.findViewById<EditText>(R.id.regex_title).text.toString())
 //        editor.putString(FILTER_REGEX_TEXT_KEY, binding.root.findViewById<EditText>(R.id.regex_text).text.toString())
         editor.apply()

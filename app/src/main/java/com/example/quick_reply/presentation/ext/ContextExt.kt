@@ -1,4 +1,4 @@
-package com.example.quick_reply.ext
+package com.example.quick_reply.presentation.ext
 
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
@@ -56,7 +56,6 @@ fun Context.isAccessibilityServiceEnabled(accessibilityService: Class<out Access
         contentResolver,
         Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
     ) ?: return false
-
     val colonSplitter = TextUtils.SimpleStringSplitter(':')
     colonSplitter.setString(enabledServices)
     while (colonSplitter.hasNext()) {

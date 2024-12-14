@@ -2,7 +2,7 @@ package com.example.quick_reply.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.quick_reply.PREFS_NAME
+import com.example.quick_reply.data.entity.PREFS_NAME
 
 class MainSharedPreferences(
     context: Context

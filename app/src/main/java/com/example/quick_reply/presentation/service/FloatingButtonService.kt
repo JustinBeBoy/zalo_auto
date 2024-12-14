@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.service
 
 import android.app.PendingIntent
 import android.app.Service
@@ -17,6 +17,13 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.quick_reply.R
+import com.example.quick_reply.data.entity.FloatingInfo
+import com.example.quick_reply.data.entity.MAX_COUNT
+import com.example.quick_reply.data.entity.PREFS_NAME
+import com.example.quick_reply.data.entity.QUOTE_REPLY_KEY
+import com.example.quick_reply.data.entity.REPLY_TEXT_KEY
+import com.example.quick_reply.presentation.ui.floatingbutton.FloatingButtonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -54,22 +61,35 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
             val quoteReply = sharedPreferences.getBoolean(QUOTE_REPLY_KEY, false)
 
             // Get the reply PendingIntent
-            val replyPendingIntent : PendingIntent? = intent.getParcelableExtra("reply_intent")
-            val contentPendingIntent : PendingIntent? = intent.getParcelableExtra("content_intent")
+            val replyPendingIntent: PendingIntent? = intent.getParcelableExtra("reply_intent")
+            val contentPendingIntent: PendingIntent? = intent.getParcelableExtra("content_intent")
 
             val index = text.indexOf(":")
-            if ((title?.contains("nhóm") == true || (title?.indexOf(":") ?: -1) > -1) && index > -1){
+            if ((title?.contains("nhóm") == true || (title?.indexOf(":") ?: -1) > -1) && index > -1) {
                 name = text.substring(0, index)
                 text = text.substring(index + 1)
             }
 
             // check duplicate text
-            if (listFloatingBtn.any {it.text.equals(text)}) {
+            if (listFloatingBtn.any { it.text.equals(text) }) {
                 return START_STICKY
             }
 
-            listFloatingBtn.add(FloatingInfo(key, title, text, name, packageName, replyKey, replyPendingIntent, contentPendingIntent, replyText, quoteReply))
-            if (listFloatingBtn.count() > MAX_COUNT){
+            listFloatingBtn.add(
+                FloatingInfo(
+                    key,
+                    title,
+                    text,
+                    name,
+                    packageName,
+                    replyKey,
+                    replyPendingIntent,
+                    contentPendingIntent,
+                    replyText,
+                    quoteReply
+                )
+            )
+            if (listFloatingBtn.count() > MAX_COUNT) {
                 listFloatingBtn.removeAt(0)
             }
 
@@ -100,7 +120,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
     }
 
     private fun removeItemWithKey(key: String?) {
-        if(key == null)
+        if (key == null)
             return
 
         val idx = listFloatingBtn.indexOfFirst {
@@ -110,7 +130,7 @@ class FloatingButtonService : Service(), View.OnTouchListener, View.OnClickListe
         if (idx > -1) {
             listFloatingBtn.removeAt(idx)
             adapter.notifyItemRemoved(idx)
-            if (listFloatingBtn.count() < 1){
+            if (listFloatingBtn.count() < 1) {
                 stopSelf()
             }
         }

@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.service
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
@@ -23,11 +23,17 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.ImageView
 import android.widget.Toast
+import com.example.quick_reply.R
+import com.example.quick_reply.data.entity.AppConfig
+import com.example.quick_reply.data.entity.GetAppConfig
+import com.example.quick_reply.data.entity.PREFS_NAME
+import com.example.quick_reply.data.entity.REPLY_TEXT_KEY
+import com.example.quick_reply.data.entity.SWIPE_TYPE
 import com.example.quick_reply.data.local.MainSharedPreferences
-import com.example.quick_reply.ext.dp2px
-import com.example.quick_reply.ext.goToPhoneHomeScreen
-import com.example.quick_reply.ext.playRingtone
-import com.example.quick_reply.ext.vibrate
+import com.example.quick_reply.presentation.ext.dp2px
+import com.example.quick_reply.presentation.ext.goToPhoneHomeScreen
+import com.example.quick_reply.presentation.ext.playRingtone
+import com.example.quick_reply.presentation.ext.vibrate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job

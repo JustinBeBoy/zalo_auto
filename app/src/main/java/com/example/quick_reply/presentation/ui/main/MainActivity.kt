@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.ui.main
 
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
@@ -18,8 +18,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ActivityMainBinding
-
+import com.example.quick_reply.presentation.service.MyAccessibilityService
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 if (!isNotificationServiceEnabled(this)) {
                     val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                     startActivity(intent)
-                }else{
+                } else {
                     Toast.makeText(this, "Read notification permission already granted!", Toast.LENGTH_SHORT).show()
                 }
                 return true
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent)
-                }else{
+                } else {
                     Toast.makeText(this, "Accessibility permission already granted!", Toast.LENGTH_SHORT).show()
                 }
                 return true
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                         Uri.parse("package:$packageName")
                     )
                     startActivityForResult(intent, REQUEST_CODE)
-                } else{
+                } else {
                     Toast.makeText(this, "Overlay permission already granted!", Toast.LENGTH_SHORT).show()
                 }
                 return true
@@ -142,4 +143,3 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 }
-

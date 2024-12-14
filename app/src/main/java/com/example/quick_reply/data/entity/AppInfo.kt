@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.data.entity
 
 import android.app.PendingIntent
 import android.graphics.drawable.Drawable
@@ -22,4 +22,3 @@ data class FloatingInfo(
     val replyText: String?,
     val quoteReply: Boolean,
 )
-

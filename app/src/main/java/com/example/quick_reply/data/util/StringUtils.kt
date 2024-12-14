@@ -1,4 +1,4 @@
-package com.example.quick_reply.util
+package com.example.quick_reply.data.util
 
 object StringUtils {
 
@@ -30,8 +30,5 @@ object StringUtils {
         }
 
         return result.toString()
-    }
-
-    fun isValidVietnamesePhoneNumber(phoneNumber: String) {
     }
 }

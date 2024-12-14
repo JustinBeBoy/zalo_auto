@@ -1,7 +1,7 @@
 package com.example.quick_reply
 
 import android.app.Application
-import com.example.quick_reply.di.repoModule
+import com.example.quick_reply.data.di.repoModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

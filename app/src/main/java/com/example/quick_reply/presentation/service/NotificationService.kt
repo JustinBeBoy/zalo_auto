@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.service
 
 import android.app.ActivityManager
 import android.app.Notification
@@ -13,10 +13,17 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import com.example.quick_reply.R
+import com.example.quick_reply.data.entity.CHECKED_APPS_KEY
+import com.example.quick_reply.data.entity.FILTER_REGEX_TEXT_KEY
+import com.example.quick_reply.data.entity.FILTER_REGEX_TITLE_KEY
+import com.example.quick_reply.data.entity.PREFS_NAME
+import com.example.quick_reply.data.entity.SPEECH_NOTI_KEY
+import com.example.quick_reply.data.entity.SPEECH_SPEED_KEY
 import com.example.quick_reply.data.repo.MainRepo
-import com.example.quick_reply.ext.isAccessibilityServiceEnabled
-import com.example.quick_reply.ext.playRingtone
-import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
+import com.example.quick_reply.data.util.StringUtils.convertToLowercaseNonAccent
+import com.example.quick_reply.presentation.ext.isAccessibilityServiceEnabled
+import com.example.quick_reply.presentation.ext.playRingtone
 import com.example.toastlib.KoushikToast
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -26,7 +33,7 @@ import java.util.Locale
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
-class NotificationService: NotificationListenerService(), TextToSpeech.OnInitListener {
+class NotificationService : NotificationListenerService(), TextToSpeech.OnInitListener {
 
     private val TAG = this.javaClass.simpleName
     private val mainRepo: MainRepo by inject()
@@ -75,7 +82,7 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
 
     private fun speak(speechText: String) {
         // Set language if necessary
-        textToSpeech?.setLanguage(Locale("vi","VN"))
+        textToSpeech?.setLanguage(Locale("vi", "VN"))
         textToSpeech?.setSpeechRate(speechSpeed)
         textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null)
     }
@@ -83,9 +90,12 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
         val sharedPreferences = this.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val checkedApps = sharedPreferences.getStringSet(CHECKED_APPS_KEY, setOf("com.zing.zalo","com.facebook.orca","org.thunderdog.challegram", "org.telegram.messenger"))
-        val regexTitleString : String = sharedPreferences.getString(FILTER_REGEX_TITLE_KEY, "") ?: ""
-        val regexTextString : String = sharedPreferences.getString(FILTER_REGEX_TEXT_KEY, "") ?: ""
+        val checkedApps = sharedPreferences.getStringSet(
+            CHECKED_APPS_KEY,
+            setOf("com.zing.zalo", "com.facebook.orca", "org.thunderdog.challegram", "org.telegram.messenger")
+        )
+        val regexTitleString: String = sharedPreferences.getString(FILTER_REGEX_TITLE_KEY, "") ?: ""
+        val regexTextString: String = sharedPreferences.getString(FILTER_REGEX_TEXT_KEY, "") ?: ""
         if (checkedApps?.contains(sbn?.packageName) == true) {
             val extras = sbn?.notification?.extras
             val title = extras?.get(Notification.EXTRA_TITLE)
@@ -103,8 +113,11 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
             var isDisabledSpeech = false
 
 
-            Log.d( TAG , "********** onNotificationPosted" )
-            Log.d( TAG , "ID :${sbn?.id},KEY :${key}, TITLE: $title, TEXT: $text, SUB_TEXT: $subtext, PACKAGE: ${sbn?.packageName}, Ticker: ${sbn?.notification?.tickerText}")
+            Log.d(TAG, "********** onNotificationPosted")
+            Log.d(
+                TAG,
+                "ID :${sbn?.id},KEY :${key}, TITLE: $title, TEXT: $text, SUB_TEXT: $subtext, PACKAGE: ${sbn?.packageName}, Ticker: ${sbn?.notification?.tickerText}"
+            )
 //            for (k in extras?.keySet()!!){
 //                Log.d("NotificationListener", "KEY: $k, VALUE: ${extras.get(k)}")
 //            }
@@ -115,7 +128,7 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
                     playRingtone(R.raw.sound_private_message)
                     return
                 }
-            } else if (text==null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
+            } else if (text == null || regexTitleString != "" && !convertTitle.toString().matches(Regex("^(?!.*nhom:).+\$"))) {
                 return
             }
 
@@ -147,7 +160,7 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
                 convertText.matches(Regex(".*da gui nhieu anh.*")) ||
                 convertText.length <= 5 ||
                 convertText.length > 350
-                ) {
+            ) {
                 return
             }
 
@@ -238,12 +251,12 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
                 }
             }
         }
-        return Pair(null,null)
+        return Pair(null, null)
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
-        Log.d( TAG , "********** onNotificationRemoved ${sbn?.packageName}" )
+        Log.d(TAG, "********** onNotificationRemoved ${sbn?.packageName}")
 //        val sharedPreferences = this.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 //        val packageName : String? = sharedPreferences.getString(PACKAGE_NAME_KEY, null)
 //        if(packageName !=null && packageName == sbn?.packageName) {
@@ -275,7 +288,8 @@ class NotificationService: NotificationListenerService(), TextToSpeech.OnInitLis
         if (appProcesses != null) {
             for (appProcess in appProcesses) {
                 if (appProcess.processName == packageName &&
-                    appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                ) {
                     return true
                 }
             }

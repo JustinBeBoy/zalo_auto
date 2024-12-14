@@ -1,4 +1,4 @@
-package com.example.quick_reply
+package com.example.quick_reply.presentation.ui.floatingbutton
 
 import android.app.PendingIntent
 import android.app.RemoteInput
@@ -13,23 +13,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.slider.Slider
-import java.util.Timer
-import java.util.TimerTask
-
+import com.example.quick_reply.R
+import com.example.quick_reply.data.entity.FloatingInfo
+import com.example.quick_reply.presentation.service.MyAccessibilityService
 
 class FloatingButtonAdapter(
     private val list: MutableList<FloatingInfo>,
     private val context: Context,
-    private val onItemClick: (key: String)->Unit,
+    private val onItemClick: (key: String) -> Unit
 ) : RecyclerView.Adapter<FloatingButtonAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.floating_item, parent, false)
@@ -78,7 +75,7 @@ class FloatingButtonAdapter(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
                     val vibrationEffect = VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE)
-                     vibrator = vibratorManager.getDefaultVibrator();
+                    vibrator = vibratorManager.getDefaultVibrator();
                     vibrator.vibrate(vibrationEffect)
                 } else {
                     vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -87,13 +84,13 @@ class FloatingButtonAdapter(
 
 //                Timer().schedule(object : TimerTask() {
 //                    override fun run() {
-                        val swipeIntent = Intent(
-                            context,
-                            MyAccessibilityService::class.java
-                        )
-                        swipeIntent.putExtra("text", item.text)
-                        swipeIntent.putExtra("package_name", item.packageName)
-                        context.startService(swipeIntent)
+                val swipeIntent = Intent(
+                    context,
+                    MyAccessibilityService::class.java
+                )
+                swipeIntent.putExtra("text", item.text)
+                swipeIntent.putExtra("package_name", item.packageName)
+                context.startService(swipeIntent)
 //                    }
 //                }, 800)
             } else {
@@ -133,7 +130,7 @@ class FloatingButtonAdapter(
         }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title = view.findViewById(R.id.floating_title) as TextView
         val text = view.findViewById(R.id.floating_text) as TextView
         val name = view.findViewById(R.id.floating_name) as TextView

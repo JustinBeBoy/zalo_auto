@@ -1,8 +1,8 @@
 package com.example.quick_reply.data.repo
 
 import com.example.quick_reply.data.local.MainSharedPreferences
-import com.example.quick_reply.util.StringUtils.VIETNAMESE_PHONE_NUMBER_PATTERN
-import com.example.quick_reply.util.StringUtils.convertToLowercaseNonAccent
+import com.example.quick_reply.data.util.StringUtils.VIETNAMESE_PHONE_NUMBER_PATTERN
+import com.example.quick_reply.data.util.StringUtils.convertToLowercaseNonAccent
 
 class MainRepo(
     private val mainSharedPreferences: MainSharedPreferences

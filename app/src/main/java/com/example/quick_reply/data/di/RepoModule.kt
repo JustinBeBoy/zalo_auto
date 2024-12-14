@@ -1,4 +1,4 @@
-package com.example.quick_reply.di
+package com.example.quick_reply.data.di
 
 import com.example.quick_reply.data.local.MainSharedPreferences
 import com.example.quick_reply.data.repo.MainRepo

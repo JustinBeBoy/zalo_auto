@@ -1,145 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragment"
-    android:padding="8dp">
-        <RelativeLayout
+    android:padding="8dp"
+    tools:context=".presentation.ui.first.FirstFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reply text:" />
+
+        <EditText
+            android:id="@+id/replyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:hint="Reply text" />
+
+        <TextView
+            android:id="@+id/filter_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/replyText"
+            android:layout_marginTop="10dp"
+            android:text="Read notificaiton from App:" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_apps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/filter_app" />
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/filter_title_label"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@id/all_apps"-->
+        <!--                    android:text="Regex for title:"/>-->
+
+        <!--                <EditText-->
+        <!--                    android:id="@+id/regex_title"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:hint="Filter regex for title"-->
+        <!--                    android:lines="3"-->
+        <!--                    android:layout_below="@id/filter_title_label"/>-->
+        <!--                <TextView-->
+        <!--                    android:id="@+id/filter_text_label"-->
+        <!--                    android:layout_marginTop="10dp"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@id/regex_title"-->
+        <!--                    android:text="Regex for text:"/>-->
+
+        <!--                <EditText-->
+        <!--                    android:id="@+id/regex_text"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:hint="Filter regex for text"-->
+        <!--                    android:lines="3"-->
+        <!--                    android:layout_below="@id/filter_text_label"/>-->
+
+        <LinearLayout
+            android:id="@+id/checkbox_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/all_apps"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/quote_reply"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Reply text:"/>
+                    android:layout_weight="1"
+                    android:text="Quote reply" />
 
-                <EditText
-                    android:layout_width="match_parent"
+                <CheckBox
+                    android:id="@+id/speech_notifcation"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/replyText"
-                    android:hint="Reply text"
-                    android:layout_below="@id/title"/>
+                    android:layout_weight="1"
+                    android:text="Speech Notification" />
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/filter_app"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbSkipPleaseChange"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/replyText"
-                    android:text="Read notificaiton from App:"/>
+                    android:layout_weight="1"
+                    android:text="@string/skip_please_change" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/all_apps"
-                    android:layout_width="match_parent"
+                <CheckBox
+                    android:id="@+id/cbSkip7Seats"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/filter_app"/>
+                    android:layout_weight="1"
+                    android:text="@string/skip_7_seats" />
+            </LinearLayout>
 
-<!--                <TextView-->
-<!--                    android:id="@+id/filter_title_label"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@id/all_apps"-->
-<!--                    android:text="Regex for title:"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-<!--                <EditText-->
-<!--                    android:id="@+id/regex_title"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:hint="Filter regex for title"-->
-<!--                    android:lines="3"-->
-<!--                    android:layout_below="@id/filter_title_label"/>-->
-<!--                <TextView-->
-<!--                    android:id="@+id/filter_text_label"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@id/regex_title"-->
-<!--                    android:text="Regex for text:"/>-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/regex_text"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:hint="Filter regex for text"-->
-<!--                    android:lines="3"-->
-<!--                    android:layout_below="@id/filter_text_label"/>-->
-
-                <LinearLayout
-                    android:id="@+id/checkbox_group"
-                    android:layout_width="match_parent"
+                <CheckBox
+                    android:id="@+id/cbEnabledQuickReplyButton"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/all_apps"
-                    android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                                <CheckBox
-                                    android:id="@+id/quote_reply"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:text="Quote reply"/>
-                                <CheckBox
-                                    android:id="@+id/speech_notifcation"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:text="Speech Notification"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                                <CheckBox
-                                    android:id="@+id/cbSkipPleaseChange"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/skip_please_change"/>
-                                <CheckBox
-                                    android:id="@+id/cbSkip7Seats"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/skip_7_seats"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                                <CheckBox
-                                    android:id="@+id/cbEnabledQuickReplyButton"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/enable_quick_reply_button"/>
-                        </LinearLayout>
-                        <TextView
-                            android:id="@+id/speed_text"
-                            android:layout_marginTop="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/replyText"
-                            android:text="Speech speed: 1.5"/>
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/speech_speed"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:valueFrom="1f"
-                            android:value="1.5f"
-                            android:valueTo="2.5f"
-                            android:stepSize="0.1"/>
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:text="@string/enable_quick_reply_button" />
+            </LinearLayout>
 
-                <Button
-                    android:id="@+id/save_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Save"
-                    android:layout_below="@id/checkbox_group"/>
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/speed_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/replyText"
+                android:layout_marginTop="10dp"
+                android:text="Speech speed: 1.5" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/speech_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stepSize="0.1"
+                android:value="1.5f"
+                android:valueFrom="1f"
+                android:valueTo="2.5f" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/checkbox_group"
+            android:text="Save" />
+
+    </RelativeLayout>
+
 </androidx.core.widget.NestedScrollView>
