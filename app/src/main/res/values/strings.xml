@@ -14,4 +14,9 @@
     <string name="enable_quick_reply_button">Bật nút trả lời nhanh</string>
     <string name="enable_accessibility_service">Bật trợ năng quick_reply</string>
     <string name="disable_accessibility_service">Tắt trợ năng quick_reply</string>
+    <string name="zla_close">Đóng</string>
+    <string name="zla_error_title">Ối</string>
+    <string name="zla_error_message">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
+    <string name="zla_loading">Đang tải, vui lòng đợi…</string>
+    <string name="zla_network_error_message">Không có kết nối Internet. Vui lòng kiểm tra kết nối của bạn và thử lại.</string>
 </resources>

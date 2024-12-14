@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginStart="40dp"
+    android:layout_marginEnd="40dp"
+    android:background="@drawable/zla_bg_white_rounded_16"
+    android:orientation="horizontal"
+    android:paddingStart="30dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="30dp"
+    android:paddingBottom="20dp">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleX="1"
+        android:scaleY="1" />
+
+    <TextView
+        android:id="@+id/tv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:text="@string/zla_loading"
+        android:textColor="#1C1B1F"
+        android:textSize="16sp" />
+
+</LinearLayout>
