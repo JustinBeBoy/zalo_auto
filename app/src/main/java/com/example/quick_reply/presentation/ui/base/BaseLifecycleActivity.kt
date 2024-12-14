@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.example.quick_reply.presentation.util.BaseViewModel
 
 abstract class BaseLifecycleActivity<B : ViewDataBinding, V : BaseViewModel> : BaseActivity() {
 

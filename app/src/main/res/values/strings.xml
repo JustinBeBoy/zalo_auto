@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">quick_reply</string>
+    <string name="app_name">Trợ lý ảo Zalo</string>
     <string name="action_read_noti_settings">Read Notificaiton Settings</string>
     <string name="action_draw_overlay_settings">Draw Overlays Settings</string>
     <string name="action_accessibility_settings">Accessibility Settings</string>
@@ -19,4 +19,5 @@
     <string name="zla_error_message">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="zla_loading">Đang tải, vui lòng đợi…</string>
     <string name="zla_network_error_message">Không có kết nối Internet. Vui lòng kiểm tra kết nối của bạn và thử lại.</string>
+    <string name="zla_splash_message">Dành cho Tài xế xe dịch vụ</string>
 </resources>

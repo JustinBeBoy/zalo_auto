@@ -3,7 +3,6 @@ package com.example.quick_reply.presentation.ui.base
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.quick_reply.presentation.util.BaseViewModel
 
 abstract class BaseFragment<V : BaseViewModel> : Fragment(), BaseView {
 

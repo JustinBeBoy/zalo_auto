@@ -3,6 +3,7 @@ package com.example.quick_reply.presentation.ui.base
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quick_reply.R
+import com.example.quick_reply.presentation.ext.setDarkStatusBar
 
 abstract class BaseActivity : AppCompatActivity(), BaseView, TransitionAware {
 
@@ -14,6 +15,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, TransitionAware {
         } else {
             overridePendingTransition(R.anim.zla_slide_from_right, R.anim.zla_slide_to_left)
         }
+        setDarkStatusBar()
         super.onCreate(savedInstanceState)
     }
 

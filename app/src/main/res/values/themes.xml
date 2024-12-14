@@ -1,9 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Quick_reply" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<resources>
+
+    <style name="Theme.Base" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/zla_primary</item>
+        <item name="colorPrimaryDark">@color/zla_primary</item>
+        <item name="colorAccent">@color/zla_primary_button</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">#64FFDA</item>
+        <item name="android:windowBackground">@color/zla_primary_background</item>
     </style>
 
-    <style name="Theme.Quick_reply" parent="Base.Theme.Quick_reply" />
+    <style name="Theme.Main" parent="Theme.Base" />
+
 </resources>

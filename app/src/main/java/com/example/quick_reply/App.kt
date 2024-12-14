@@ -2,6 +2,7 @@ package com.example.quick_reply
 
 import android.app.Application
 import com.example.quick_reply.data.di.repoModule
+import com.example.quick_reply.presentation.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -19,7 +20,10 @@ class App : Application() {
         instance = this
         startKoin {
             androidContext(this@App)
-            modules(repoModule)
+            modules(
+                repoModule,
+                viewModelModule
+            )
         }
     }
 }

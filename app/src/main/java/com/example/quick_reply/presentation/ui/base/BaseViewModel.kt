@@ -1,4 +1,4 @@
-package com.example.quick_reply.presentation.util
+package com.example.quick_reply.presentation.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,7 @@ import com.example.quick_reply.App
 import com.example.quick_reply.R
 import com.example.quick_reply.data.datastate.DataState
 import com.example.quick_reply.data.util.CommonUtils
+import com.example.quick_reply.presentation.util.SingleLiveEvent
 
 open class BaseViewModel : ViewModel() {
 
