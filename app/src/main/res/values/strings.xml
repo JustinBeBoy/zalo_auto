@@ -20,4 +20,14 @@
     <string name="zla_loading">Đang tải, vui lòng đợi…</string>
     <string name="zla_network_error_message">Không có kết nối Internet. Vui lòng kiểm tra kết nối của bạn và thử lại.</string>
     <string name="zla_splash_message">Dành cho Tài xế xe dịch vụ</string>
+    <string name="zla_register_title">Chào mừng bạn!</string>
+    <string name="zla_register_message">Đăng ký tài khoản mới</string>
+    <string name="zla_full_name">Họ và tên</string>
+    <string name="zla_phone_number">Số điện thoại</string>
+    <string name="zla_password">Mật khẩu</string>
+    <string name="zla_register_tnc">Tôi đồng ý với %s</string>
+    <string name="zla_register_tnc_param_1">Điều kiện &amp; điều khoản</string>
+    <string name="zla_register_login">Bạn đã có tài khoản? %s</string>
+    <string name="zla_login">Đăng nhập</string>
+    <string name="zla_continue">Tiếp tục</string>
 </resources>

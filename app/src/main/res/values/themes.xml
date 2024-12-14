@@ -3,7 +3,7 @@
     <style name="Theme.Base" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/zla_primary</item>
         <item name="colorPrimaryDark">@color/zla_primary</item>
-        <item name="colorAccent">@color/zla_primary_button</item>
+        <item name="colorAccent">#197DCA</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorControlNormal">#64FFDA</item>
