@@ -1,4 +1,6 @@
 <resources>
     <dimen name="zla_common_edit_text_height">43dp</dimen>
     <dimen name="zla_common_button_height">44dp</dimen>
+    <dimen name="zla_common_edit_text_error_height">51dp</dimen>
+    <dimen name="zla_common_edit_text_padding_horizontal">4dp</dimen>
 </resources>

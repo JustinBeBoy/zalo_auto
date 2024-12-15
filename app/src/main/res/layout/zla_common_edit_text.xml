@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/zla_common_edit_text_padding_horizontal">
 
     <EditText
         android:id="@+id/editText"
@@ -33,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:textColor="#C12126"
+        android:textColor="@color/zla_primary_error"
         app:layout_constraintEnd_toEndOf="@id/editText"
         app:layout_constraintStart_toEndOf="@id/ivWarning"
         app:layout_constraintTop_toBottomOf="@id/editText"

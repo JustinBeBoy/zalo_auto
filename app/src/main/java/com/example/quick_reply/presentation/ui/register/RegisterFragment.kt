@@ -31,5 +31,18 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
         binding.btnContinue.setSingleClickListener {
             viewModel.register()
         }
+        setupFocusChangeListeners()
+    }
+
+    private fun setupFocusChangeListeners() {
+        binding.edtFullName.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.isFocusFullName.value = hasFocus
+        }
+        binding.edtPhoneNumber.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.isFocusPhoneNumber.value = hasFocus
+        }
+        binding.edtPassword.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.isFocusPassword.value = hasFocus
+        }
     }
 }

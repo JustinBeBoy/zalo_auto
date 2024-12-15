@@ -13,4 +13,5 @@
     <color name="zla_splash_title_2">#FF0068FF</color>
     <color name="zla_primary_hint">#BCC1CA</color>
     <color name="zla_primary_span">#379AE6</color>
+    <color name="zla_primary_error">#C12126</color>
 </resources>

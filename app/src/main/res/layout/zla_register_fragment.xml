@@ -26,7 +26,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="28dp">
+                android:layout_marginHorizontal="24dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivIcon"
@@ -68,6 +68,8 @@
                     android:drawableStart="@drawable/zla_ic_profile"
                     android:hint="@string/zla_full_name"
                     android:text="@={viewModel.fullName}"
+                    app:errorMessage="@{viewModel.fullNameError}"
+                    app:isValid="@{viewModel.isValidFullName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvMessage" />
@@ -81,6 +83,8 @@
                     android:hint="@string/zla_phone_number"
                     android:inputType="phone"
                     android:text="@={viewModel.phoneNumber}"
+                    app:errorMessage="@{viewModel.phoneNumberError}"
+                    app:isValid="@{viewModel.isValidPhoneNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edtFullName" />
@@ -95,6 +99,8 @@
                     android:hint="@string/zla_password"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}"
+                    app:errorMessage="@{viewModel.passwordError}"
+                    app:isValid="@{viewModel.isValidPassword}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber" />
@@ -105,6 +111,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:checked="@={viewModel.isCheckedTnC}"
+                    android:translationX="-2dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edtPassword"
@@ -114,6 +122,7 @@
                     android:id="@+id/btnContinue"
                     style="@style/PrimaryButton"
                     android:layout_width="0dp"
+                    android:layout_marginHorizontal="4dp"
                     android:layout_marginTop="24dp"
                     android:enabled="@{viewModel.isValid}"
                     android:text="@string/zla_continue"

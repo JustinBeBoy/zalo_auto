@@ -22,29 +22,48 @@ fun TextView.setSpannedText(
     subTypeface: Int? = null,
     subClickListener: (() -> Unit)? = null
 ) {
-    setText(fullText, TextView.BufferType.SPANNABLE)
-    val index = fullText.indexOf(subText)
-    val spannable = text as Spannable
-    val subColor = ContextCompat.getColor(context, subColorRes)
-    spannable.setSpan(ForegroundColorSpan(subColor), index, index + subText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-    subTypeface?.let {
-        spannable.setSpan(StyleSpan(it), index, index + subText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-    }
-    subClickListener?.let {
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(view: View) {
-                view.cancelPendingInputEvents()
-                it()
-            }
+    setSpannedText(fullText, listOf(subText), subColorRes, subTypeface, subClickListener)
+}
 
-            override fun updateDrawState(textPaint: TextPaint) {
-                super.updateDrawState(textPaint)
-                textPaint.isUnderlineText = false
-            }
+fun TextView.setSpannedText(
+    fullText: String,
+    subTexts: List<String>,
+    @ColorRes subColorRes: Int,
+    subTypeface: Int? = null,
+    subClickListener: (() -> Unit)? = null
+) {
+    if (subTexts.isEmpty()) {
+        text = fullText
+        return
+    }
+    setText(fullText, TextView.BufferType.SPANNABLE)
+    for (subText in subTexts) {
+        val index = fullText.indexOf(subText).takeIf { it > -1 } ?: continue
+        if (index + subText.length > fullText.length) {
+            continue
         }
-        spannable.setSpan(clickableSpan, index, index + subText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        movementMethod = LinkMovementMethod.getInstance()
-        highlightColor = Color.TRANSPARENT
+        val spannable = text as Spannable
+        val subColor = ContextCompat.getColor(context, subColorRes)
+        spannable.setSpan(ForegroundColorSpan(subColor), index, index + subText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        subTypeface?.let {
+            spannable.setSpan(StyleSpan(it), index, index + subText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        subClickListener?.let {
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(view: View) {
+                    view.cancelPendingInputEvents()
+                    it()
+                }
+
+                override fun updateDrawState(textPaint: TextPaint) {
+                    super.updateDrawState(textPaint)
+                    textPaint.isUnderlineText = false
+                }
+            }
+            spannable.setSpan(clickableSpan, index, index + subText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            movementMethod = LinkMovementMethod.getInstance()
+            highlightColor = Color.TRANSPARENT
+        }
     }
 }
 
@@ -55,8 +74,18 @@ fun TextView.setSpannedText(
     subTypeface: Int? = null,
     subClickListener: (() -> Unit)? = null
 ) {
-    val subText = context.getString(subTextRes)
-    setSpannedText(context.getString(fullTextRes, subText), subText, subColorRes, subTypeface, subClickListener)
+    setSpannedText(fullTextRes, listOf(subTextRes), subColorRes, subTypeface, subClickListener)
+}
+
+fun TextView.setSpannedText(
+    @StringRes fullTextRes: Int,
+    subTextResList: List<Int>,
+    @ColorRes subColorRes: Int,
+    subTypeface: Int? = null,
+    subClickListener: (() -> Unit)? = null
+) {
+    val subTexts = subTextResList.map { context.getString(it) }
+    setSpannedText(context.getString(fullTextRes, *subTexts.toTypedArray()), subTexts, subColorRes, subTypeface, subClickListener)
 }
 
 fun View.doDelayed(delayTime: Long = SWEET_LITTLE_DELAY, action: () -> Unit) {
