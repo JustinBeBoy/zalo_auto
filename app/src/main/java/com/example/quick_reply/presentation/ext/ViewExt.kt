@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.example.quick_reply.data.util.SWEET_LITTLE_DELAY
+import com.example.quick_reply.presentation.util.ViewWeakRunnable
 
 fun TextView.setSpannedText(
     fullText: String,
@@ -55,4 +57,22 @@ fun TextView.setSpannedText(
 ) {
     val subText = context.getString(subTextRes)
     setSpannedText(context.getString(fullTextRes, subText), subText, subColorRes, subTypeface, subClickListener)
+}
+
+fun View.doDelayed(delayTime: Long = SWEET_LITTLE_DELAY, action: () -> Unit) {
+    this.postDelayed(
+        ViewWeakRunnable(this) { action.invoke() },
+        delayTime
+    )
+}
+
+fun View.setSingleClickListener(
+    delayTime: Long = SWEET_LITTLE_DELAY,
+    f: View.() -> Unit
+) {
+    setOnClickListener { view ->
+        view.isClickable = false
+        f()
+        view.doDelayed(delayTime) { view?.isClickable = true }
+    }
 }

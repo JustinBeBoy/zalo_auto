@@ -1,5 +1,6 @@
 package com.example.quick_reply.data.datastate
 
+import com.example.quick_reply.data.remote.error.ApiErrorMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
@@ -31,6 +32,12 @@ fun <T> Flow<T>.convertToDataState(
             )
         } ?: emit(DataState.Loading())
     }
+
+fun <T> Flow<T>.convertToDataState(
+    errorMapper: ApiErrorMapper,
+    partialFlow: Flow<T>? = null,
+    ignorePartialFlowException: Boolean = true
+) = convertToDataState(errorMapper::mapError, partialFlow, ignorePartialFlowException)
 
 fun <T, I> Flow<DataState<T>>.mapResult(mapper: (T) -> I): Flow<DataState<I>> = map {
     when (it) {

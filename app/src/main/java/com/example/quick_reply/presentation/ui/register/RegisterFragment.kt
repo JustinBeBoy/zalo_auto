@@ -3,14 +3,20 @@ package com.example.quick_reply.presentation.ui.register
 import android.graphics.Typeface
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaRegisterFragmentBinding
+import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, RegisterViewModel>() {
 
     override val layoutId get() = R.layout.zla_register_fragment
-    override val viewModel: RegisterViewModel by inject()
+    override val viewModel: RegisterViewModel by viewModel()
+
+    override fun setupBindingVariables() {
+        super.setupBindingVariables()
+        binding.viewModel = viewModel
+    }
 
     override fun setupUI() {
         super.setupUI()
@@ -21,6 +27,9 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
         binding.tvLogin.setSpannedText(R.string.zla_register_login, R.string.zla_login, R.color.zla_primary_span, Typeface.BOLD) {
             // TODO
             showAlert("Test", "Login")
+        }
+        binding.btnContinue.setSingleClickListener {
+            viewModel.register()
         }
     }
 }
