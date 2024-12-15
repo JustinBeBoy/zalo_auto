@@ -6,6 +6,8 @@ import com.example.quick_reply.databinding.ZlaRegisterFragmentBinding
 import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, RegisterViewModel>() {
@@ -32,6 +34,11 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
             viewModel.register()
         }
         setupFocusChangeListeners()
+        setEventListener(requireActivity(), viewLifecycleOwner, KeyboardVisibilityEventListener { isOpen ->
+            if (!isOpen) {
+                binding.clContent.requestFocus()
+            }
+        })
     }
 
     private fun setupFocusChangeListeners() {

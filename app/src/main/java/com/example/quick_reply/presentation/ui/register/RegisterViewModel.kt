@@ -3,6 +3,7 @@ package com.example.quick_reply.presentation.ui.register
 import android.content.res.Resources
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.quick_reply.R
@@ -24,9 +25,9 @@ class RegisterViewModel(
     val phoneNumber = MutableLiveData("")
     val password = MutableLiveData("")
 
-    val isValidFullName = fullName.map { it.isNotBlank() }
-    val isValidPhoneNumber = phoneNumber.map { it.matches(Regex(StringUtils.VIETNAMESE_PHONE_NUMBER_PATTERN)) }
-    val isValidPassword = password.map { it.matches(Regex(StringUtils.PASSWORD_PATTERN)) }
+    val isValidFullName = fullName.map { it.isNotBlank() }.distinctUntilChanged()
+    val isValidPhoneNumber = phoneNumber.map { it.matches(Regex(StringUtils.VIETNAMESE_PHONE_NUMBER_PATTERN)) }.distinctUntilChanged()
+    val isValidPassword = password.map { it.matches(Regex(StringUtils.PASSWORD_PATTERN)) }.distinctUntilChanged()
     val isCheckedTnC = MutableLiveData(false)
 
     val isValid = MediatorLiveData<Boolean>().apply {
