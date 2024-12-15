@@ -64,8 +64,6 @@ class CommonEditText @JvmOverloads constructor(
             binding.editText.setLines(it)
         } ?: typedArray.getInt(R.styleable.CommonEditText_android_maxLines, 0).takeUnless { it <= 1 }?.let {
             binding.editText.maxLines = it
-        } ?: run {
-            binding.editText.isSingleLine = true
         }
         typedArray.getString(R.styleable.CommonEditText_android_text)?.let {
             binding.editText.setText(it)
