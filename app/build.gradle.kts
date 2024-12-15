@@ -21,7 +21,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -35,6 +36,21 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
+    }
+
+    flavorDimensions("main")
+    productFlavors {
+        create("dev") {
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            addManifestPlaceholders(mapOf("firebase_analytics_deactivated" to true, "firebase_crashlytics_enabled" to false))
+            buildConfigField("String", "API_BASE_URL", "\"https://api.zauto.click/ums/api/\"")
+        }
+        create("prod") {
+            addManifestPlaceholders(mapOf("firebase_analytics_deactivated" to false, "firebase_crashlytics_enabled" to true))
+            buildConfigField("String", "API_BASE_URL", "\"https://api.zauto.click/ums/api/\"")
+        }
     }
 }
 

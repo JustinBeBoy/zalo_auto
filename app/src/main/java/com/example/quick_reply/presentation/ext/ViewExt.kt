@@ -50,9 +50,9 @@ fun TextView.setSpannedText(
     @StringRes fullTextRes: Int,
     @StringRes subTextRes: Int,
     @ColorRes subColorRes: Int,
-    subStyle: Int? = null,
+    subTypeface: Int? = null,
     subClickListener: (() -> Unit)? = null
 ) {
     val subText = context.getString(subTextRes)
-    setSpannedText(context.getString(fullTextRes, subText), subText, subColorRes, subStyle, subClickListener)
+    setSpannedText(context.getString(fullTextRes, subText), subText, subColorRes, subTypeface, subClickListener)
 }

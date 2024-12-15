@@ -13,6 +13,6 @@ class SplashFragment : DataBindingFragment<ZlaSplashFragmentBinding, SplashViewM
 
     override fun setupUI() {
         super.setupUI()
-        binding.tvTitle.setSpannedText(getString(R.string.app_name), "Zalo", R.color.zla_splash_title_2)
+        binding.tvTitle.setSpannedText(R.string.zla_splash_title, R.string.zla_splash_title_param_1, R.color.zla_splash_title_2)
     }
 }
