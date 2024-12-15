@@ -60,10 +60,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-                <EditText
+                <com.example.quick_reply.presentation.widget.edittext.CommonEditText
                     android:id="@+id/edtFullName"
-                    style="@style/PrimaryEditText"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
                     android:drawableStart="@drawable/zla_ic_profile"
                     android:hint="@string/zla_full_name"
@@ -72,10 +72,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvMessage" />
 
-                <EditText
+                <com.example.quick_reply.presentation.widget.edittext.CommonEditText
                     android:id="@+id/edtPhoneNumber"
-                    style="@style/PrimaryEditText"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:drawableStart="@drawable/zla_ic_phone"
                     android:hint="@string/zla_phone_number"
@@ -85,10 +85,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edtFullName" />
 
-                <EditText
+                <com.example.quick_reply.presentation.widget.edittext.CommonEditText
                     android:id="@+id/edtPassword"
-                    style="@style/PrimaryEditText"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:drawableStart="@drawable/zla_ic_lock"
                     android:drawableEnd="@drawable/zla_ic_eye_open"

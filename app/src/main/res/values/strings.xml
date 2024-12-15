@@ -32,4 +32,5 @@
     <string name="zla_register_login">Bạn đã có tài khoản? %s</string>
     <string name="zla_login">Đăng nhập</string>
     <string name="zla_continue">Tiếp tục</string>
+    <string name="zla_password_rule">Có ít nhất 8 ký tự, bao gồm chữ cái và số</string>
 </resources>
