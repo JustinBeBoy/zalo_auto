@@ -1,8 +1,11 @@
 package com.example.quick_reply.presentation.ui.register
 
 import android.graphics.Typeface
+import androidx.navigation.fragment.findNavController
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaRegisterFragmentBinding
+import com.example.quick_reply.presentation.ext.navigateHorizontal
+import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
@@ -26,8 +29,7 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
             showAlert("Test", "TnC")
         }
         binding.tvLogin.setSpannedText(R.string.zla_register_login, R.string.zla_login, R.color.zla_primary_span, Typeface.BOLD) {
-            // TODO
-            showAlert("Test", "Login")
+            findNavController().navigateHorizontal(R.id.action_registerFragment_loginFragment, popUpTo = R.id.loginFragment)
         }
         binding.btnContinue.onClickListener = {
             viewModel.register()
@@ -38,6 +40,9 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
                 binding.clContent.requestFocus()
             }
         })
+        binding.ivBack.setSingleClickListener {
+            onBackPressed()
+        }
     }
 
     private fun setupFocusChangeListeners() {

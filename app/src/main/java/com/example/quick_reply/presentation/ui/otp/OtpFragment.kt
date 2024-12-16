@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaOtpFragmentBinding
 import com.example.quick_reply.presentation.ext.hideKeyboard
+import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.model.OtpState
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
@@ -37,6 +38,9 @@ class OtpFragment : DataBindingFragment<ZlaOtpFragmentBinding, OtpViewModel>() {
                     viewModel.onOtpComplete(otp)
                 }
             }
+        }
+        binding.ivBack.setSingleClickListener {
+            onBackPressed()
         }
     }
 
