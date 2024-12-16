@@ -17,4 +17,6 @@
     <color name="zla_button_loading_text">#117B34</color>
     <color name="zla_button_loading_background">#EEFDF3</color>
     <color name="zla_highlight_text">#323842</color>
+    <color name="zla_forgot_password_button_background_tint">#EFB034</color>
+    <color name="zla_forgot_password_button_text">#5D4108</color>
 </resources>

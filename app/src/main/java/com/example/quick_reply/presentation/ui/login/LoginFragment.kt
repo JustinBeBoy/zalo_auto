@@ -21,7 +21,7 @@ class LoginFragment : DataBindingFragment<ZlaLoginFragmentBinding, LoginViewMode
 
     override fun setupUI() {
         super.setupUI()
-        binding.tvRegister.setSpannedText(R.string.zla_register_login, R.string.zla_register, R.color.zla_primary_span, Typeface.BOLD) {
+        binding.tvRegister.setSpannedText(R.string.zla_login_register, R.string.zla_register, R.color.zla_primary_span, Typeface.BOLD) {
             // TODO
             showAlert("Test", "Register")
         }

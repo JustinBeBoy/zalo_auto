@@ -53,4 +53,8 @@
     <string name="zla_input_phone_number">Nhập số điện thoại</string>
     <string name="zla_input_password">Nhập mật khẩu</string>
     <string name="zla_skip_login">Bỏ qua đăng nhập</string>
+    <string name="zla_forgot_password_title">Quên Mật Khẩu</string>
+    <string name="zla_please_input_info">Vui lòng nhập thông tin</string>
+    <string name="zla_next">Tiếp</string>
+    <string name="zla_login_register">Bạn chưa có tài khoản? %s</string>
 </resources>
