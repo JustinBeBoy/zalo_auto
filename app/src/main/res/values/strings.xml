@@ -47,4 +47,10 @@
     <string name="zla_otp_wrong">Sai mã xác nhận</string>
     <string name="zla_otp_resending">Đang gửi lại mã</string>
     <string name="zla_verifying">Đang xác nhận</string>
+    <string name="zla_forgot_password">Quên mật khẩu?</string>
+    <string name="zla_register">Đăng ký</string>
+    <string name="zla_login_message">Đăng nhập vào tài khoản của bạn</string>
+    <string name="zla_input_phone_number">Nhập số điện thoại</string>
+    <string name="zla_input_password">Nhập mật khẩu</string>
+    <string name="zla_skip_login">Bỏ qua đăng nhập</string>
 </resources>

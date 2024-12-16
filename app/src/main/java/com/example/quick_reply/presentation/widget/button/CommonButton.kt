@@ -2,6 +2,7 @@ package com.example.quick_reply.presentation.widget.button
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -76,9 +77,11 @@ class CommonButton @JvmOverloads constructor(
         when (type) {
             ButtonType.OUTLINED -> {
                 setBackgroundResource(R.drawable.zla_bg_common_button_outlined)
+                setRippleEnabled(false)
             }
             else -> {
                 setBackgroundResource(R.drawable.zla_bg_common_button_filled)
+                setRippleEnabled(true)
             }
         }
     }
@@ -110,6 +113,7 @@ class CommonButton @JvmOverloads constructor(
             tmpText = text
             text = message
         }
+        setRippleEnabled(false)
     }
 
     fun showLoading(@StringRes messageRes: Int) {
@@ -140,5 +144,11 @@ class CommonButton @JvmOverloads constructor(
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         alpha = if (enabled) 1f else 0.4f
+    }
+
+    private fun setRippleEnabled(isEnabled: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            foreground = if (isEnabled) ContextCompat.getDrawable(context, R.drawable.zla_fg_ripple) else null
+        }
     }
 }

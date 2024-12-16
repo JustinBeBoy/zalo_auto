@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
         android:textColor="@color/zla_primary_error"

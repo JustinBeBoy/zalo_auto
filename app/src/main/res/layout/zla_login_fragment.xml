@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.quick_reply.presentation.ui.register.RegisterViewModel" />
+            type="com.example.quick_reply.presentation.ui.login.LoginViewModel" />
 
     </data>
 
@@ -18,7 +18,7 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/tvLogin"
+            app:layout_constraintBottom_toTopOf="@id/tvRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -57,40 +57,24 @@
                     style="@style/T14N"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/zla_register_message"
+                    android:text="@string/zla_login_message"
                     android:textColor="@color/zla_secondary_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
                 <com.example.quick_reply.presentation.widget.edittext.CommonEditText
-                    android:id="@+id/edtFullName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="56dp"
-                    android:drawableStart="@drawable/zla_ic_profile"
-                    android:hint="@string/zla_full_name"
-                    android:text="@={viewModel.fullName}"
-                    app:errorMessage="@{viewModel.fullNameError}"
-                    app:isValid="@{viewModel.isValidFullName}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvMessage" />
-
-                <com.example.quick_reply.presentation.widget.edittext.CommonEditText
                     android:id="@+id/edtPhoneNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="56dp"
                     android:drawableStart="@drawable/zla_ic_phone"
-                    android:hint="@string/zla_phone_number"
+                    android:hint="@string/zla_input_phone_number"
                     android:inputType="phone"
                     android:text="@={viewModel.phoneNumber}"
-                    app:errorMessage="@{viewModel.phoneNumberError}"
-                    app:isValid="@{viewModel.isValidPhoneNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edtFullName" />
+                    app:layout_constraintTop_toBottomOf="@id/tvMessage" />
 
                 <com.example.quick_reply.presentation.widget.edittext.CommonEditText
                     android:id="@+id/edtPassword"
@@ -99,47 +83,56 @@
                     android:layout_marginTop="24dp"
                     android:drawableStart="@drawable/zla_ic_lock"
                     android:drawableEnd="@drawable/zla_ic_eye_open"
-                    android:hint="@string/zla_password"
+                    android:hint="@string/zla_input_password"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}"
-                    app:errorMessage="@{viewModel.passwordError}"
-                    app:isValid="@{viewModel.isValidPassword}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbTnc"
+                <TextView
+                    android:id="@+id/tvForgotPassword"
                     style="@style/T14N"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:checked="@={viewModel.isCheckedTnC}"
-                    android:translationX="-2dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edtPassword"
-                    tools:text="@string/zla_register_tnc" />
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:text="@string/zla_forgot_password"
+                    android:textColor="@color/zla_primary_span"
+                    app:layout_constraintBottom_toTopOf="@id/btnContinue"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <com.example.quick_reply.presentation.widget.button.CommonButton
                     android:id="@+id/btnContinue"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/zla_common_button_height"
                     android:layout_marginHorizontal="4dp"
-                    android:layout_marginTop="24dp"
-                    android:enabled="@{viewModel.isValid}"
-                    android:text="@string/zla_continue"
+                    android:layout_marginTop="124dp"
+                    android:text="@string/zla_login"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cbTnc"
-                    tools:enabled="false" />
+                    app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber" />
+
+                <TextView
+                    android:id="@+id/tvSkipLogin"
+                    style="@style/T14N"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:text="@string/zla_skip_login"
+                    android:textColor="@color/zla_primary_span"
+                    app:layout_constraintEnd_toEndOf="@id/btnContinue"
+                    app:layout_constraintStart_toStartOf="@id/btnContinue"
+                    app:layout_constraintTop_toBottomOf="@id/btnContinue" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
 
         <TextView
-            android:id="@+id/tvLogin"
+            android:id="@+id/tvRegister"
             style="@style/T14N"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

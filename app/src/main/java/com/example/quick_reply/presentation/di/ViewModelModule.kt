@@ -1,5 +1,6 @@
 package com.example.quick_reply.presentation.di
 
+import com.example.quick_reply.presentation.ui.login.LoginViewModel
 import com.example.quick_reply.presentation.ui.main.MainViewModel
 import com.example.quick_reply.presentation.ui.otp.OtpViewModel
 import com.example.quick_reply.presentation.ui.register.RegisterViewModel
@@ -12,4 +13,5 @@ val viewModelModule = module {
     viewModel { SplashViewModel() }
     viewModel { RegisterViewModel(get(), get()) }
     viewModel { OtpViewModel() }
+    viewModel { LoginViewModel() }
 }
