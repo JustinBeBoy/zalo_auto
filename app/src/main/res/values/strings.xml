@@ -39,4 +39,12 @@
     <string name="zla_password_rule_param_1">8 ký tự</string>
     <string name="zla_password_rule_param_2">chữ cái</string>
     <string name="zla_password_rule_param_3">số</string>
+    <string name="zla_otp_title">Nhập mã OTP</string>
+    <string name="zla_otp_message">Hãy nhập %s để hoàn tất đăng ký.</string>
+    <string name="zla_otp_message_param_1">mã OTP đã gửi đến điện thoại</string>
+    <string name="zla_otp_resend_after">Gửi lại mã sau %ds</string>
+    <string name="zla_otp_resend">Gửi lại mã</string>
+    <string name="zla_otp_wrong">Sai mã xác nhận</string>
+    <string name="zla_otp_resending">Đang gửi lại mã</string>
+    <string name="zla_verifying">Đang xác nhận</string>
 </resources>

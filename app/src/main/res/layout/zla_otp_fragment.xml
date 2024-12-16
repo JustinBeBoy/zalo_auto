@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="24dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/zla_ic_arrow_left" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/zla_ic_otp" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/T32B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/zla_otp_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivIcon" />
+
+            <TextView
+                android:id="@+id/tvMessage"
+                style="@style/T14N"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/zla_secondary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="@string/zla_otp_message" />
+
+            <in.aabhasjindal.otptextview.OtpTextView
+                android:id="@+id/optView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="49dp"
+                android:textColor="@color/zla_primary_text"
+                app:box_margin="6dp"
+                app:height="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvMessage"
+                app:length="6"
+                app:otp_box_background="@drawable/zla_bg_otp"
+                app:otp_box_background_error="@drawable/zla_bg_otp_error"
+                app:otp_box_background_success="@drawable/zla_bg_otp_success"
+                app:otp_text_size="20sp"
+                app:text_typeface="inter.ttf"
+                app:width="40dp" />
+
+            <TextView
+                android:id="@+id/tvError"
+                style="@style/T14N"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:text="@string/zla_otp_wrong"
+                android:textColor="@color/zla_primary_error"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/zla_ic_warning"
+                app:layout_constraintEnd_toEndOf="@id/optView"
+                app:layout_constraintStart_toStartOf="@id/optView"
+                app:layout_constraintTop_toBottomOf="@id/optView" />
+
+            <com.example.quick_reply.presentation.widget.button.CommonButton
+                android:id="@+id/btnContinue"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/zla_common_button_height"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="59dp"
+                android:textColor="@color/zla_primary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/optView"
+                app:type="outlined"
+                tools:text="@string/zla_otp_resend_after" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

@@ -1,6 +1,7 @@
 package com.example.quick_reply.presentation.di
 
 import com.example.quick_reply.presentation.ui.main.MainViewModel
+import com.example.quick_reply.presentation.ui.otp.OtpViewModel
 import com.example.quick_reply.presentation.ui.register.RegisterViewModel
 import com.example.quick_reply.presentation.ui.splash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -10,4 +11,5 @@ val viewModelModule = module {
     viewModel { MainViewModel() }
     viewModel { SplashViewModel() }
     viewModel { RegisterViewModel(get(), get()) }
+    viewModel { OtpViewModel() }
 }

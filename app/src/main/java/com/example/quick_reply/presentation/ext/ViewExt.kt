@@ -1,5 +1,6 @@
 package com.example.quick_reply.presentation.ext
 
+import android.content.Context
 import android.graphics.Color
 import android.text.Spannable
 import android.text.TextPaint
@@ -8,6 +9,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -104,4 +106,11 @@ fun View.setSingleClickListener(
         f()
         view.doDelayed(delayTime) { view?.isClickable = true }
     }
+}
+
+fun View.hideKeyboard() {
+    clearFocus()
+    val inputMethod: InputMethodManager =
+        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethod.hideSoftInputFromWindow(windowToken, 0)
 }

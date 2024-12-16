@@ -144,15 +144,15 @@ class CommonEditText @JvmOverloads constructor(
                 height = resources.getDimensionPixelSize(R.dimen.zla_common_edit_text_height)
             }
             binding.editText.setBackgroundResource(R.drawable.zla_bg_common_edit_text)
-            binding.groupWarning.isVisible = false
+            binding.tvError.isVisible = false
         } else {
             binding.root.setPadding(0, 0, 0, 0)
             binding.editText.updateLayoutParams {
                 height = resources.getDimensionPixelSize(R.dimen.zla_common_edit_text_error_height)
             }
             binding.editText.setBackgroundResource(R.drawable.zla_bg_common_edit_text_error)
-            binding.groupWarning.isVisible = true
-            binding.textView.setSpannedText(
+            binding.tvError.isVisible = true
+            binding.tvError.setSpannedText(
                 errorMessage?.fullText.orEmpty(),
                 errorMessage?.subTexts.orEmpty(),
                 R.color.zla_primary_error,

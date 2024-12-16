@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-    app:startDestination="@id/registerFragment">
+    app:startDestination="@id/otpFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -14,5 +14,10 @@
         android:id="@+id/registerFragment"
         android:name="com.example.quick_reply.presentation.ui.register.RegisterFragment"
         tools:layout="@layout/zla_register_fragment" />
+
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.example.quick_reply.presentation.ui.otp.OtpFragment"
+        tools:layout="@layout/zla_otp_fragment" />
 
 </navigation>

@@ -14,4 +14,7 @@
     <color name="zla_primary_hint">#BCC1CA</color>
     <color name="zla_primary_span">#379AE6</color>
     <color name="zla_primary_error">#C12126</color>
+    <color name="zla_button_loading_text">#117B34</color>
+    <color name="zla_button_loading_background">#EEFDF3</color>
+    <color name="zla_highlight_text">#323842</color>
 </resources>

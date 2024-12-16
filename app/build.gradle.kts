@@ -77,4 +77,7 @@ dependencies {
 
     // KeyboardVisibilityEvent
     implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3")
+
+    // OtpView
+    implementation("com.github.aabhasr1:OtpView:v1.1.2-ktx")
 }
