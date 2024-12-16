@@ -3,7 +3,6 @@ package com.example.quick_reply.presentation.ui.register
 import android.graphics.Typeface
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaRegisterFragmentBinding
-import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
@@ -30,7 +29,7 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
             // TODO
             showAlert("Test", "Login")
         }
-        binding.btnContinue.setSingleClickListener {
+        binding.btnContinue.onClickListener = {
             viewModel.register()
         }
         setupFocusChangeListeners()
@@ -51,5 +50,13 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
         binding.edtPassword.setOnFocusChangeListener { _, hasFocus ->
             viewModel.isFocusPassword.value = hasFocus
         }
+    }
+
+    override fun showLoading() {
+        binding.btnContinue.showLoading(R.string.zla_verifying)
+    }
+
+    override fun hideLoading() {
+        binding.btnContinue.hideLoading()
     }
 }

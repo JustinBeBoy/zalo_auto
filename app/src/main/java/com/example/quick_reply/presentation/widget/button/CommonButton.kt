@@ -7,10 +7,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaCommonButtonBinding
+import com.example.quick_reply.presentation.ext.setSingleClickListener
 
 class CommonButton @JvmOverloads constructor(
     context: Context,
@@ -30,6 +32,22 @@ class CommonButton @JvmOverloads constructor(
         set(value) {
             binding.textView.text = value
         }
+    private var backgroundTintRes: Int? = null
+    private var textColorRes = R.color.white
+    private val isLoading get() = binding.progressBar.isVisible
+    var onClickListener: (() -> Unit)? = null
+        set(value) {
+            field = value
+            setSingleClickListener {
+                if (!isLoading) {
+                    onClickListener?.invoke()
+                }
+            }
+        }
+    private var tmpType: ButtonType? = null
+    private var tmpBackgroundTintRes: Int? = null
+    private var tmpTextColorRes: Int? = null
+    private var tmpText: String? = null
 
     init {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, resources.getDimensionPixelSize(R.dimen.zla_common_button_height))
@@ -48,6 +66,9 @@ class CommonButton @JvmOverloads constructor(
         typedArray.getString(R.styleable.CommonButton_android_text)?.let {
             binding.textView.text = it
         }
+        typedArray.getBoolean(R.styleable.CommonButton_android_enabled, true).takeUnless { it }?.let {
+            isEnabled = false
+        }
         typedArray.recycle()
     }
 
@@ -63,19 +84,61 @@ class CommonButton @JvmOverloads constructor(
     }
 
     fun setBackgroundTint(@ColorRes colorRes: Int?) {
+        backgroundTintRes = colorRes
         backgroundTintList = colorRes?.let { ColorStateList.valueOf(ContextCompat.getColor(context, it)) }
     }
 
     fun setTextColor(@ColorRes colorRes: Int) {
+        textColorRes = colorRes
         binding.textView.setTextColor(ContextCompat.getColor(context, colorRes))
         binding.progressBar.indeterminateTintList = ColorStateList.valueOf(ContextCompat.getColor(context, colorRes))
     }
 
-    fun showLoading() {
+    fun showLoading(message: String? = null) {
         binding.progressBar.isVisible = true
+        // type
+        tmpType = type
+        type = ButtonType.FILLED
+        // background tint
+        tmpBackgroundTintRes = backgroundTintRes
+        setBackgroundTint(R.color.zla_button_loading_background)
+        // text color
+        tmpTextColorRes = textColorRes
+        setTextColor(R.color.zla_button_loading_text)
+        // text
+        message?.takeUnless { it.isBlank() }?.let {
+            tmpText = text
+            text = message
+        }
+    }
+
+    fun showLoading(@StringRes messageRes: Int) {
+        showLoading(resources.getString(messageRes))
     }
 
     fun hideLoading() {
         binding.progressBar.isVisible = false
+        // type
+        tmpType?.let {
+            type = it
+            tmpType = null
+        }
+        // background tint
+        setBackgroundTint(tmpBackgroundTintRes)
+        tmpBackgroundTintRes = null
+        // text color
+        tmpTextColorRes?.let {
+            setTextColor(it)
+            tmpTextColorRes = null
+        }
+        tmpText?.let {
+            text = it
+            tmpText = null
+        }
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        alpha = if (enabled) 1f else 0.4f
     }
 }

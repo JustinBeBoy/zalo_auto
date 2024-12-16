@@ -5,7 +5,6 @@ import androidx.core.view.isVisible
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaOtpFragmentBinding
 import com.example.quick_reply.presentation.ext.hideKeyboard
-import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.model.OtpState
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
@@ -22,7 +21,7 @@ class OtpFragment : DataBindingFragment<ZlaOtpFragmentBinding, OtpViewModel>() {
         super.setupUI()
         binding.tvMessage.setSpannedText(R.string.zla_otp_message, R.string.zla_otp_message_param_1, R.color.zla_highlight_text, Typeface.BOLD)
         binding.btnContinue.text = getString(R.string.zla_otp_resend_after, 60)
-        binding.btnContinue.setSingleClickListener {
+        binding.btnContinue.onClickListener = {
             if (viewModel.isTimeout.value == true) {
                 binding.optView.hideKeyboard()
                 binding.optView.setOTP("")
@@ -33,8 +32,10 @@ class OtpFragment : DataBindingFragment<ZlaOtpFragmentBinding, OtpViewModel>() {
             override fun onInteractionListener() = Unit
 
             override fun onOTPComplete(otp: String) {
-                binding.optView.hideKeyboard()
-                viewModel.onOtpComplete(otp)
+                if (viewModel.otpState.value != OtpState.VERIFYING) {
+                    binding.optView.hideKeyboard()
+                    viewModel.onOtpComplete(otp)
+                }
             }
         }
     }
@@ -53,34 +54,26 @@ class OtpFragment : DataBindingFragment<ZlaOtpFragmentBinding, OtpViewModel>() {
     private fun handleOtpState(otpState: OtpState) {
         when (otpState) {
             OtpState.NORMAL -> {
+                binding.btnContinue.hideLoading()
                 binding.optView.resetState()
                 binding.tvError.isVisible = false
                 updateRemainingTime()
-                binding.btnContinue.hideLoading()
             }
             OtpState.VERIFYING -> {
+                binding.btnContinue.showLoading(R.string.zla_verifying)
                 binding.optView.showSuccess()
                 binding.tvError.isVisible = false
-                binding.btnContinue.type = ButtonType.FILLED
-                binding.btnContinue.setBackgroundTint(R.color.zla_button_loading_background)
-                binding.btnContinue.setTextColor(R.color.zla_button_loading_text)
-                binding.btnContinue.text = getString(R.string.zla_verifying)
-                binding.btnContinue.showLoading()
             }
             OtpState.ERROR -> {
+                binding.btnContinue.hideLoading()
                 binding.optView.showError()
                 binding.tvError.isVisible = true
                 updateRemainingTime()
-                binding.btnContinue.hideLoading()
             }
             OtpState.RESENDING -> {
+                binding.btnContinue.showLoading(R.string.zla_otp_resending)
                 binding.optView.resetState()
                 binding.tvError.isVisible = false
-                binding.btnContinue.type = ButtonType.FILLED
-                binding.btnContinue.setBackgroundTint(R.color.zla_button_loading_background)
-                binding.btnContinue.setTextColor(R.color.zla_button_loading_text)
-                binding.btnContinue.text = getString(R.string.zla_otp_resending)
-                binding.btnContinue.showLoading()
             }
         }
     }

@@ -121,17 +121,18 @@
                     app:layout_constraintTop_toBottomOf="@id/edtPassword"
                     tools:text="@string/zla_register_tnc" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.example.quick_reply.presentation.widget.button.CommonButton
                     android:id="@+id/btnContinue"
-                    style="@style/PrimaryButton"
                     android:layout_width="0dp"
+                    android:layout_height="@dimen/zla_common_button_height"
                     android:layout_marginHorizontal="4dp"
                     android:layout_marginTop="24dp"
                     android:enabled="@{viewModel.isValid}"
                     android:text="@string/zla_continue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cbTnc" />
+                    app:layout_constraintTop_toBottomOf="@id/cbTnc"
+                    tools:enabled="false" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
