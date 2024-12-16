@@ -57,4 +57,8 @@
     <string name="zla_please_input_info">Vui lòng nhập thông tin</string>
     <string name="zla_next">Tiếp</string>
     <string name="zla_login_register">Bạn chưa có tài khoản? %s</string>
+    <string name="zla_change_password_title">Nhập mật khẩu mới</string>
+    <string name="zla_change_password_message">Vui lòng nhập mật khẩu mới</string>
+    <string name="zla_re_enter_pasword">Nhập lại mật khẩu</string>
+    <string name="zla_confirm">Xác nhận</string>
 </resources>
