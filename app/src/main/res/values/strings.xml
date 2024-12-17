@@ -67,4 +67,10 @@
     <string name="zla_grant_permissions_message">Để ứng dụng Driva có thể thực hiện các chức năng nâng cao như Trả lời nhanh hoặc Tự động nhận cuốc thì cần cấp quyền</string>
     <string name="zla_grant_permissions_yes">Đồng ý cấp quyền</string>
     <string name="zla_no">Không</string>
+    <string name="zla_grant_notification_access">Cho phép ứng dụng truy cập thông báo</string>
+    <string name="zla_yes">Đồng ý</string>
+    <string name="zla_cancel">Hủy bỏ</string>
+    <string name="zla_grant_permissions_with_steps">Cấp quyền ứng dụng (%d/%d)</string>
+    <string name="zla_turn_on_accessibility_service">Bật dịch vụ Hỗ trợ tiếp cận</string>
+    <string name="zla_allow_display_over_other_apps">Cho phép ứng dụng hiển thị nội dung lên trên cùng của các ứng dụng khác</string>
 </resources>

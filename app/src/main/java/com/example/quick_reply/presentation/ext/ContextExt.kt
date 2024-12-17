@@ -66,3 +66,18 @@ fun Context.isAccessibilityServiceEnabled(accessibilityService: Class<out Access
     }
     return false
 }
+
+fun Context.isNotificationServiceEnabled(): Boolean {
+    val enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+    // Check if the app's package name is in the list of enabled listeners
+    if (!TextUtils.isEmpty(enabledListeners)) {
+        val listeners = enabledListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        for (listener in listeners) {
+            val componentName = ComponentName.unflattenFromString(listener)
+            if (componentName != null && packageName == componentName.packageName) {
+                return true // Notification listener access is enabled
+            }
+        }
+    }
+    return false // Notification listener access is not enabled
+}

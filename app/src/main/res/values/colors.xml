@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lightGray">#f0ebdf</color>
     <color name="yellow">#e3b434</color>
-    <color name="zla_primary">@color/white</color>
+    <color name="zla_primary">@color/zla_primary_button</color>
     <color name="zla_primary_background">@color/white</color>
     <color name="zla_primary_text">#171A1F</color>
     <color name="zla_secondary_text">#9095A0</color>
