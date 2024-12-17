@@ -3,6 +3,7 @@
 
     <style name="PrimaryText">
         <item name="android:textColor">@color/zla_primary_text</item>
+        <item name="android:lineSpacingExtra">4dp</item>
     </style>
 
     <style name="NormalText" parent="@style/PrimaryText">

@@ -2,6 +2,7 @@ package com.example.quick_reply.presentation.di
 
 import com.example.quick_reply.presentation.ui.changepassword.ChangePasswordViewModel
 import com.example.quick_reply.presentation.ui.forgotpassword.ForgotPasswordViewModel
+import com.example.quick_reply.presentation.ui.grantpermissions.GrantPermissionsViewModel
 import com.example.quick_reply.presentation.ui.login.LoginViewModel
 import com.example.quick_reply.presentation.ui.main.MainViewModel
 import com.example.quick_reply.presentation.ui.otp.OtpViewModel
@@ -18,4 +19,5 @@ val viewModelModule = module {
     viewModel { LoginViewModel() }
     viewModel { ForgotPasswordViewModel() }
     viewModel { ChangePasswordViewModel() }
+    viewModel { GrantPermissionsViewModel() }
 }

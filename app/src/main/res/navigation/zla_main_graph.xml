@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/grantPermissionsFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -86,5 +86,10 @@
             app:destination="@id/registerFragment" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/grantPermissionsFragment"
+        android:name="com.example.quick_reply.presentation.ui.grantpermissions.GrantPermissionsFragment"
+        tools:layout="@layout/zla_grant_permissions_fragment" />
 
 </navigation>

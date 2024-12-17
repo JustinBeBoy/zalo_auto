@@ -61,4 +61,10 @@
     <string name="zla_change_password_message">Vui lòng nhập mật khẩu mới</string>
     <string name="zla_re_enter_pasword">Nhập lại mật khẩu</string>
     <string name="zla_confirm">Xác nhận</string>
+    <string name="zla_register_success_title">Đăng ký thành công!</string>
+    <string name="zla_register_success_message">Đã tạo tài khoản cho bạn</string>
+    <string name="zla_grant_permissions_title">Cấp quyền ứng dụng</string>
+    <string name="zla_grant_permissions_message">Để ứng dụng Driva có thể thực hiện các chức năng nâng cao như Trả lời nhanh hoặc Tự động nhận cuốc thì cần cấp quyền</string>
+    <string name="zla_grant_permissions_yes">Đồng ý cấp quyền</string>
+    <string name="zla_no">Không</string>
 </resources>
