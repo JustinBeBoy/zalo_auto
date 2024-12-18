@@ -44,6 +44,11 @@
             android:theme="@style/Theme.Auth"
             tools:ignore="LockedOrientationActivity" />
 
+        <activity
+            android:name=".presentation.ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <service
             android:name=".presentation.service.NotificationService"
             android:exported="true"
