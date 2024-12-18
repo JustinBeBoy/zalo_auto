@@ -15,16 +15,49 @@ import com.example.quick_reply.presentation.service.MyAccessibilityService
 abstract class BasePermissionsFragment<B : ViewDataBinding, V : BaseViewModel> : DataBindingFragment<B, V>(), DefaultLifecycleObserver {
 
     companion object {
-        private const val TOTAL_PERMISSIONS = 3
+        private const val MAX_TOTAL_PERMISSIONS = 3
     }
 
+    private var totalPermissions = MAX_TOTAL_PERMISSIONS
+    private var remainingNumberOfPermissions = totalPermissions
+    private var currentStep = 1
     private var isWaitingForResult = false
+    private val title
+        get() = when {
+            totalPermissions > 1 -> getString(R.string.zla_grant_permissions_with_steps, currentStep, totalPermissions)
+            else -> getString(R.string.zla_grant_permissions_title)
+        }
 
     protected open fun onAllPermissionsGranted() = Unit
 
     protected open fun onAllPermissionsNotGranted() = Unit
 
     protected fun requestPermissions() {
+        totalPermissions = getRequiredNumberOfPermissions()
+        if (totalPermissions > 0) {
+            remainingNumberOfPermissions = totalPermissions
+            currentStep = 1
+            doRequestPermissions()
+        } else {
+            onAllPermissionsGranted()
+        }
+    }
+
+    private fun getRequiredNumberOfPermissions(): Int {
+        var requiredNumberOfPermissions = MAX_TOTAL_PERMISSIONS
+        if (viewContext.isNotificationServiceEnabled()) {
+            requiredNumberOfPermissions--
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(viewContext)) {
+            requiredNumberOfPermissions--
+        }
+        if (viewContext.isAccessibilityServiceEnabled(MyAccessibilityService::class.java)) {
+            requiredNumberOfPermissions--
+        }
+        return requiredNumberOfPermissions
+    }
+
+    private fun doRequestPermissions() {
         requestNotificationAccess() ?: requestDisplayOverOtherApps() ?: requestAccessibilityService() ?: onAllPermissionsGranted()
     }
 
@@ -33,7 +66,7 @@ abstract class BasePermissionsFragment<B : ViewDataBinding, V : BaseViewModel> :
             return null
         }
         showAlert(
-            title = getString(R.string.zla_grant_permissions_with_steps, 1, TOTAL_PERMISSIONS),
+            title = title,
             message = getString(R.string.zla_grant_notification_access),
             positiveButton = getString(R.string.zla_yes),
             positiveCallback = {
@@ -55,7 +88,7 @@ abstract class BasePermissionsFragment<B : ViewDataBinding, V : BaseViewModel> :
             return null
         }
         showAlert(
-            title = getString(R.string.zla_grant_permissions_with_steps, 2, TOTAL_PERMISSIONS),
+            title = title,
             message = getString(R.string.zla_allow_display_over_other_apps),
             positiveButton = getString(R.string.zla_yes),
             positiveCallback = {
@@ -77,7 +110,7 @@ abstract class BasePermissionsFragment<B : ViewDataBinding, V : BaseViewModel> :
             return null
         }
         showAlert(
-            title = getString(R.string.zla_grant_permissions_with_steps, 3, TOTAL_PERMISSIONS),
+            title = title,
             message = getString(R.string.zla_turn_on_accessibility_service),
             positiveButton = getString(R.string.zla_yes),
             positiveCallback = {
@@ -103,7 +136,11 @@ abstract class BasePermissionsFragment<B : ViewDataBinding, V : BaseViewModel> :
         if (isWaitingForResult) {
             isWaitingForResult = false
             viewLifecycleOwner.lifecycle.removeObserver(this)
-            requestPermissions()
+            getRequiredNumberOfPermissions().takeIf { it < remainingNumberOfPermissions }?.let {
+                currentStep += remainingNumberOfPermissions - it
+                remainingNumberOfPermissions = it
+            }
+            doRequestPermissions()
         }
     }
 }
