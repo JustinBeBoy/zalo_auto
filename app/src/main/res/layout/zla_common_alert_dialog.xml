@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/zla_ic_check_rounded" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/T16N"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivIcon"
+        tools:text="@string/app_name"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        style="@style/T14N"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin felis a eget eget urna. Ultricies sit pharetra maecenas neque." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPositive"
+        style="@style/PrimaryButton"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="@string/zla_continue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:backgroundTint="@color/zla_button_success"
+        tools:text="@string/zla_ok" />
+
+    <TextView
+        android:id="@+id/tvNegative"
+        style="@style/T14N"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/zla_fg_ripple_rounded_6"
+        android:gravity="center"
+        android:paddingHorizontal="28dp"
+        android:textColor="@color/zla_secondary_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnPositive"
+        tools:text="@string/zla_cancel"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

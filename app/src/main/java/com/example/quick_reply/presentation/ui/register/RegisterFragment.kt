@@ -26,7 +26,7 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
         super.setupUI()
         binding.cbTnc.setSpannedText(R.string.zla_register_tnc, R.string.zla_register_tnc_param_1, R.color.zla_primary_span) {
             // TODO
-            showAlert("Test", "TnC")
+            showSuccess("Success")
         }
         binding.tvLogin.setSpannedText(R.string.zla_register_login, R.string.zla_login, R.color.zla_primary_span, Typeface.BOLD) {
             findNavController().navigateHorizontal(R.id.action_registerFragment_loginFragment, popUpTo = R.id.loginFragment)

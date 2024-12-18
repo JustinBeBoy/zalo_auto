@@ -73,4 +73,5 @@
     <string name="zla_grant_permissions_with_steps">Cấp quyền ứng dụng (%d/%d)</string>
     <string name="zla_turn_on_accessibility_service">Bật dịch vụ Hỗ trợ tiếp cận</string>
     <string name="zla_allow_display_over_other_apps">Cho phép ứng dụng hiển thị nội dung lên trên cùng của các ứng dụng khác</string>
+    <string name="zla_ok">OK</string>
 </resources>

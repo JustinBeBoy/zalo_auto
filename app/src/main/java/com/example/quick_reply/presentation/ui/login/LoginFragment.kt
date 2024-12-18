@@ -29,7 +29,8 @@ class LoginFragment : DataBindingFragment<ZlaLoginFragmentBinding, LoginViewMode
             findNavController().navigateHorizontal(R.id.action_loginFragment_forgotPassword)
         }
         binding.tvSkipLogin.setSingleClickListener {
-            showAlert("Test", "Skip Login")
+            // TODO
+            showError("Error")
         }
         binding.ivBack.setSingleClickListener {
             onBackPressed()

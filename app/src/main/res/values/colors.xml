@@ -19,4 +19,6 @@
     <color name="zla_highlight_text">#323842</color>
     <color name="zla_forgot_password_button_background_tint">#EFB034</color>
     <color name="zla_forgot_password_button_text">#5D4108</color>
+    <color name="zla_button_success">#1AC052</color>
+    <color name="zla_text_error">#EA916E</color>
 </resources>
