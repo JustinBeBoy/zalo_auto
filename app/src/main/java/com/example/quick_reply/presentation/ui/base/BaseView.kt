@@ -84,6 +84,8 @@ interface BaseView {
         }
         // cancelable
         alertDialog.setCancelable(cancelable)
+        // window animations
+        alertDialog.window?.attributes?.windowAnimations = R.style.CommonDialogAnimations
         // show
         alertDialog.show()
     }

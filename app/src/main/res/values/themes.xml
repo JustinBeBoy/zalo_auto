@@ -12,13 +12,18 @@
 
     <style name="Theme.Main" parent="Theme.Base" />
 
-    <style name="CommonAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    <style name="CommonDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/CommonDialogCorners</item>
     </style>
 
-    <style name="DialogCorners">
+    <style name="CommonDialogCorners">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="CommonDialogAnimations">
+        <item name="android:windowEnterAnimation">@anim/zla_scale_up</item>
+        <item name="android:windowExitAnimation">@anim/zla_scale_down</item>
     </style>
 
 </resources>
