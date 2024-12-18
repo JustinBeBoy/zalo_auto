@@ -29,4 +29,8 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment(), BaseView {
     protected fun onBackPressed() {
         activity?.onBackPressed()
     }
+
+    protected fun finish() {
+        activity?.finish()
+    }
 }

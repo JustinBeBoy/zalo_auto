@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.quick_reply.presentation.ui.register.RegisterFragment"
+        tools:layout="@layout/zla_register_fragment">
+
+        <action
+            android:id="@+id/action_registerFragment_otpFragment"
+            app:destination="@id/otpFragment" />
+
+        <action
+            android:id="@+id/action_registerFragment_loginFragment"
+            app:destination="@id/loginFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.example.quick_reply.presentation.ui.otp.OtpFragment"
+        tools:layout="@layout/zla_otp_fragment">
+
+        <action
+            android:id="@+id/action_otpFragment_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.quick_reply.presentation.ui.login.LoginFragment"
+        tools:layout="@layout/zla_login_fragment">
+
+        <action
+            android:id="@+id/action_loginFragment_forgotPassword"
+            app:destination="@id/forgotPasswordFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_otpFragment"
+            app:destination="@id/otpFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_registerFragment"
+            app:destination="@id/registerFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.quick_reply.presentation.ui.forgotpassword.ForgotPasswordFragment"
+        tools:layout="@layout/zla_forgot_password_fragment">
+
+        <action
+            android:id="@+id/action_forgotPasswordFragment_otpFragment"
+            app:destination="@id/otpFragment" />
+
+        <action
+            android:id="@+id/action_forgotPasswordFragment_registerFragment"
+            app:destination="@id/registerFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.quick_reply.presentation.ui.changepassword.ChangePasswordFragment"
+        tools:layout="@layout/zla_change_password_fragment">
+
+        <action
+            android:id="@+id/action_changePasswordFragment_registerFragment"
+            app:destination="@id/registerFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/grantPermissionsFragment"
+        android:name="com.example.quick_reply.presentation.ui.grantpermissions.GrantPermissionsFragment"
+        tools:layout="@layout/zla_grant_permissions_fragment" />
+
+</navigation>

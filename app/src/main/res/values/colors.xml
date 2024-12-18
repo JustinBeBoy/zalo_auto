@@ -21,4 +21,5 @@
     <color name="zla_forgot_password_button_text">#5D4108</color>
     <color name="zla_button_success">#1AC052</color>
     <color name="zla_text_error">#EA916E</color>
+    <color name="zla_secondary_background">#F2F2F2</color>
 </resources>
