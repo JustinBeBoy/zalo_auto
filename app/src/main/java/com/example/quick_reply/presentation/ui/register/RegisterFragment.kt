@@ -1,6 +1,7 @@
 package com.example.quick_reply.presentation.ui.register
 
 import android.graphics.Typeface
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaRegisterFragmentBinding
@@ -9,7 +10,6 @@ import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, RegisterViewModel>() {
@@ -35,11 +35,12 @@ class RegisterFragment : DataBindingFragment<ZlaRegisterFragmentBinding, Registe
             viewModel.register()
         }
         setupFocusChangeListeners()
-        setEventListener(requireActivity(), viewLifecycleOwner, KeyboardVisibilityEventListener { isOpen ->
+        setEventListener(requireActivity(), viewLifecycleOwner) { isOpen ->
             if (!isOpen) {
                 binding.clContent.requestFocus()
             }
-        })
+            binding.tvLogin.isVisible = !isOpen
+        }
         binding.ivBack.setSingleClickListener {
             onBackPressed()
         }

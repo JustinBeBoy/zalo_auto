@@ -1,6 +1,7 @@
 package com.example.quick_reply.presentation.ui.login
 
 import android.graphics.Typeface
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaLoginFragmentBinding
@@ -8,6 +9,7 @@ import com.example.quick_reply.presentation.ext.navigateHorizontal
 import com.example.quick_reply.presentation.ext.setSingleClickListener
 import com.example.quick_reply.presentation.ext.setSpannedText
 import com.example.quick_reply.presentation.ui.base.DataBindingFragment
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : DataBindingFragment<ZlaLoginFragmentBinding, LoginViewModel>() {
@@ -38,6 +40,9 @@ class LoginFragment : DataBindingFragment<ZlaLoginFragmentBinding, LoginViewMode
         binding.btnContinue.onClickListener = {
             // TODO
             findNavController().navigateHorizontal(R.id.action_loginFragment_otpFragment)
+        }
+        KeyboardVisibilityEvent.setEventListener(requireActivity(), viewLifecycleOwner) { isOpen ->
+            binding.tvRegister.isVisible = !isOpen
         }
     }
 }
