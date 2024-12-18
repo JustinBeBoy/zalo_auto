@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <merge
+        android:layout_height="@dimen/zla_common_button_height"
+        tools:background="@drawable/zla_bg_white_rounded_8"
+        tools:layout_margin="7dp"
+        tools:layout_width="match_parent"
+        tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/T14N"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:singleLine="true"
+            android:textColor="@color/zla_highlight_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/zla_skip_message_please_change" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/zla_common_switch_thumb"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:checked="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="12dp"
+            android:background="@color/zla_common_divider"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </merge>
+
+</layout>

@@ -1,10 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@id/llOnOff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/llOnOff"
+            app:srcCompat="@drawable/zla_ic_settings" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@id/llOnOff"
+            app:layout_constraintStart_toEndOf="@id/ivSettings"
+            app:layout_constraintTop_toTopOf="@id/llOnOff"
+            app:srcCompat="@drawable/zla_ic_alarm" />
+
+        <LinearLayout
+            android:id="@+id/llOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/zla_bg_on_off"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvOff"
+                style="@style/T14N"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/zla_bg_on_off"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="@string/zla_off"
+                android:textColor="@color/zla_text_on_off" />
+
+            <TextView
+                android:id="@+id/tvOn"
+                style="@style/T14N"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/zla_bg_on_off"
+                android:backgroundTint="@color/zla_primary_button"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="@string/zla_on"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@id/llOnOff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/llOnOff"
+            app:srcCompat="@drawable/zla_ic_account" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

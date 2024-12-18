@@ -41,6 +41,7 @@
         <activity
             android:name=".presentation.ui.auth.AuthActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.Auth"
             tools:ignore="LockedOrientationActivity" />
 
         <service

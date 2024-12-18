@@ -7,10 +7,15 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorControlNormal">#64FFDA</item>
-        <item name="android:windowBackground">@color/zla_primary_background</item>
     </style>
 
-    <style name="Theme.Main" parent="Theme.Base" />
+    <style name="Theme.Main" parent="Theme.Base">
+        <item name="android:windowBackground">@color/zla_main_background</item>
+    </style>
+
+    <style name="Theme.Auth" parent="Theme.Base">
+        <item name="android:windowBackground">@color/zla_auth_background</item>
+    </style>
 
     <style name="CommonDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">@style/CommonDialogCorners</item>
