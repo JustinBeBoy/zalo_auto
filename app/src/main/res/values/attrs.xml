@@ -34,4 +34,11 @@
         <attr name="android:layout_width" />
     </declare-styleable>
 
+    <declare-styleable name="OnOffView">
+        <attr name="state" format="enum">
+            <enum name="off" value="0" />
+            <enum name="on" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

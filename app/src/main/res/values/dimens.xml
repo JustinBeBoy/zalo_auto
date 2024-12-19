@@ -6,4 +6,5 @@
     <dimen name="zla_common_edit_text_padding_horizontal">4dp</dimen>
     <dimen name="zla_common_switch_width">40dp</dimen>
     <dimen name="zla_common_switch_height">24dp</dimen>
+    <dimen name="zla_on_off_view_height">34dp</dimen>
 </resources>
