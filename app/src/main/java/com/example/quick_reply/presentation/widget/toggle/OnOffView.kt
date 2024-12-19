@@ -7,9 +7,12 @@ import android.graphics.Color
 import android.graphics.drawable.TransitionDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.example.quick_reply.R
 import com.example.quick_reply.databinding.ZlaOnOffViewBinding
+import com.example.quick_reply.presentation.ext.animate
+import com.example.quick_reply.presentation.ext.buildConstraintSet
 import com.example.quick_reply.presentation.ext.setSingleClickListener
 
 class OnOffView @JvmOverloads constructor(
@@ -17,7 +20,7 @@ class OnOffView @JvmOverloads constructor(
     attrs: AttributeSet,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
+) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     private val binding = ZlaOnOffViewBinding.inflate(LayoutInflater.from(context), this, true)
     var onStateChanged: ((OnOffState) -> Unit)? = null
@@ -31,7 +34,6 @@ class OnOffView @JvmOverloads constructor(
         }
 
     init {
-        layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, resources.getDimensionPixelSize(R.dimen.zla_on_off_view_height))
         setBackgroundResource(R.drawable.zla_bg_on_off)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OnOffView)
         state = OnOffState.entries.toTypedArray()[typedArray.getInt(R.styleable.OnOffView_state, OnOffState.OFF.ordinal)]
@@ -46,15 +48,27 @@ class OnOffView @JvmOverloads constructor(
 
     private fun updateState() = when (state) {
         OnOffState.OFF -> {
-            (binding.tvOff.background as TransitionDrawable).reverseTransition(300)
-            (binding.tvOn.background as TransitionDrawable).reverseTransition(300)
+            animate(
+                set = buildConstraintSet {
+                    connect(R.id.viewChecked, ConstraintSet.START, id, ConstraintSet.START)
+                    clear(R.id.viewChecked, ConstraintSet.END)
+                },
+                duration = 300
+            )
+            (binding.viewChecked.background as TransitionDrawable).reverseTransition(300)
             ObjectAnimator.ofObject(binding.tvOn, "textColor", ArgbEvaluator(), Color.WHITE, Color.parseColor("#2F353E"))
                 .setDuration(300)
                 .start()
         }
         OnOffState.ON -> {
-            (binding.tvOff.background as TransitionDrawable).startTransition(300)
-            (binding.tvOn.background as TransitionDrawable).startTransition(300)
+            animate(
+                set = buildConstraintSet {
+                    clear(R.id.viewChecked, ConstraintSet.START)
+                    connect(R.id.viewChecked, ConstraintSet.END, id, ConstraintSet.END)
+                },
+                duration = 300
+            )
+            (binding.viewChecked.background as TransitionDrawable).startTransition(300)
             ObjectAnimator.ofObject(binding.tvOn, "textColor", ArgbEvaluator(), Color.parseColor("#2F353E"), Color.WHITE)
                 .setDuration(300)
                 .start()

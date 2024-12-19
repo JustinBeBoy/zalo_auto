@@ -1,36 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <merge
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/zla_on_off_view_height"
+        android:layout_height="wrap_content"
         android:background="@drawable/zla_bg_on_off"
-        android:orientation="horizontal"
         tools:layout_margin="16dp"
-        tools:parentTag="android.widget.LinearLayout">
+        tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-        <TextView
-            android:id="@+id/tvOff"
-            style="@style/T14N"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/zla_bg_off"
-            android:gravity="center"
-            android:paddingHorizontal="16dp"
-            android:text="@string/zla_off"
-            android:textColor="@color/zla_text_on_off" />
+        <View
+            android:id="@+id/viewChecked"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/zla_bg_on_off_selector"
+            app:layout_constraintBottom_toBottomOf="@id/llContent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/llContent"
+            app:layout_constraintWidth_percent="0.5" />
 
-        <TextView
-            android:id="@+id/tvOn"
-            style="@style/T14N"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/zla_bg_on"
-            android:gravity="center"
-            android:paddingHorizontal="16dp"
-            android:text="@string/zla_on"
-            android:textColor="@color/zla_text_on_off" />
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/zla_on_off_view_height"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvOff"
+                style="@style/T14N"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="@string/zla_off"
+                android:textColor="@color/zla_text_on_off" />
+
+            <TextView
+                android:id="@+id/tvOn"
+                style="@style/T14N"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="@string/zla_on"
+                android:textColor="@color/zla_text_on_off" />
+
+        </LinearLayout>
 
     </merge>
 
