@@ -24,4 +24,14 @@
         <attr name="android:enabled" />
     </declare-styleable>
 
+    <declare-styleable name="SwitchSettingView">
+        <attr name="android:text" />
+        <attr name="android:checked" />
+        <attr name="isVisibleDivider" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonSwitch">
+        <attr name="android:layout_width" />
+    </declare-styleable>
+
 </resources>

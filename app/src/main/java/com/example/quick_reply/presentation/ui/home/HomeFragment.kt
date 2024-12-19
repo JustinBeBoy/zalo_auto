@@ -9,4 +9,9 @@ class HomeFragment : DataBindingFragment<ZlaHomeFragmentBinding, HomeViewModel>(
 
     override val layoutId get() = R.layout.zla_home_fragment
     override val viewModel: HomeViewModel by viewModel()
+
+    override fun setupBindingVariables() {
+        super.setupBindingVariables()
+        binding.viewModel = viewModel
+    }
 }

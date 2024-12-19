@@ -22,6 +22,6 @@ val viewModelModule = module {
     viewModel { ForgotPasswordViewModel() }
     viewModel { ChangePasswordViewModel() }
     viewModel { GrantPermissionsViewModel() }
-    viewModel { HomeViewModel() }
+    viewModel { HomeViewModel(get()) }
     viewModel { MainViewModel() }
 }
