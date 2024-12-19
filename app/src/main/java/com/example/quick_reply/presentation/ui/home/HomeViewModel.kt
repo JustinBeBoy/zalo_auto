@@ -14,4 +14,13 @@ class HomeViewModel(
     val isSkip7Seats = DelegatedMutableLiveData(mainSharedPreferences.isSkip7Seats()) {
         mainSharedPreferences.setSkip7Seats(it)
     }
+    val isEnabledVoiceNotification = DelegatedMutableLiveData(mainSharedPreferences.isEnabledVoiceNotification()) {
+        mainSharedPreferences.setEnabledVoiceNotification(it)
+    }
+    val isEnabledQuickReplyButton = DelegatedMutableLiveData(mainSharedPreferences.isEnabledQuickReplyButton()) {
+        mainSharedPreferences.setEnabledQuickReplyButton(it)
+    }
+    val isOpenZaloVoiceMessage = DelegatedMutableLiveData(mainSharedPreferences.isOpenZaloVoiceMessage()) {
+        mainSharedPreferences.setOpenZaloVoiceMessage(it)
+    }
 }

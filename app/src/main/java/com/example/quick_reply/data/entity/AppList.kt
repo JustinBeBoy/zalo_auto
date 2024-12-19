@@ -31,7 +31,5 @@ val FILTER_REGEX_TEXT_KEY = "filter_regex_text"
 val FILTER_REGEX_TITLE_KEY = "filter_regex_title"
 val REPLY_TEXT_KEY = "reply_text"
 val QUOTE_REPLY_KEY = "quote_reply"
-val SPEECH_SPEED_KEY = "speech_speed"
-val SPEECH_NOTI_KEY = "speech_noti"
 
 val MAX_COUNT = 4

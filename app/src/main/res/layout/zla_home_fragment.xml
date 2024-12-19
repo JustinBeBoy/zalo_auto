@@ -86,7 +86,34 @@
                     android:layout_height="wrap_content"
                     android:checked="@={viewModel.isSkip7Seats}"
                     android:text="@string/zla_skip_7_seats"
+                    app:isVisibleDivider="true"
                     app:layout_constraintTop_toBottomOf="@id/switchSkipPleaseChange" />
+
+                <com.example.quick_reply.presentation.widget.setting.SwitchSettingView
+                    android:id="@+id/switchVoiceNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.isEnabledVoiceNotification}"
+                    android:text="@string/zla_voice_notification"
+                    app:isVisibleDivider="true"
+                    app:layout_constraintTop_toBottomOf="@id/switchSkip7Seats" />
+
+                <com.example.quick_reply.presentation.widget.setting.SwitchSettingView
+                    android:id="@+id/switchQuickReplyButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.isEnabledQuickReplyButton}"
+                    android:text="@string/zla_quick_reply_button"
+                    app:isVisibleDivider="true"
+                    app:layout_constraintTop_toBottomOf="@id/switchVoiceNotification" />
+
+                <com.example.quick_reply.presentation.widget.setting.SwitchSettingView
+                    android:id="@+id/switchOpenZaloVoiceMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.isOpenZaloVoiceMessage}"
+                    android:text="@string/zla_open_zalo_voice_message"
+                    app:layout_constraintTop_toBottomOf="@id/switchQuickReplyButton" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

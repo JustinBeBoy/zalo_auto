@@ -18,8 +18,7 @@ import com.example.quick_reply.data.entity.CHECKED_APPS_KEY
 import com.example.quick_reply.data.entity.FILTER_REGEX_TEXT_KEY
 import com.example.quick_reply.data.entity.FILTER_REGEX_TITLE_KEY
 import com.example.quick_reply.data.entity.PREFS_NAME
-import com.example.quick_reply.data.entity.SPEECH_NOTI_KEY
-import com.example.quick_reply.data.entity.SPEECH_SPEED_KEY
+import com.example.quick_reply.data.local.MainSharedPreferences
 import com.example.quick_reply.data.repo.MainRepo
 import com.example.quick_reply.data.util.StringUtils.convertToLowercaseNonAccent
 import com.example.quick_reply.presentation.ext.isAccessibilityServiceEnabled
@@ -36,6 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class NotificationService : NotificationListenerService(), TextToSpeech.OnInitListener {
 
     private val TAG = this.javaClass.simpleName
+    private val mainSharedPreferences: MainSharedPreferences by inject()
     private val mainRepo: MainRepo by inject()
     private var speechSpeed: Float = 1.5f
     private var textToSpeech: TextToSpeech? = null
@@ -188,11 +188,11 @@ class NotificationService : NotificationListenerService(), TextToSpeech.OnInitLi
 //                return
 //            }
 
-            if (!isDisabledSpeech && sharedPreferences.getBoolean(SPEECH_NOTI_KEY, true)) {
+            if (!isDisabledSpeech && mainSharedPreferences.isEnabledVoiceNotification()) {
                 if (textToSpeech == null || textToSpeechStatus.get() != TextToSpeech.SUCCESS) {
                     textToSpeech = TextToSpeech(this, this)
                 }
-                speechSpeed = sharedPreferences.getFloat(SPEECH_SPEED_KEY, 1.5f)
+                speechSpeed = mainSharedPreferences.getSpeechSpeed()
                 var speechText = text?.toString().orEmpty()
                 val index = speechText.indexOf(":")
                 val speechTitle = title?.toString()

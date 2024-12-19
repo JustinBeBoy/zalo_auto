@@ -1,15 +1,7 @@
 <resources>
     <string name="app_name">Trợ lý ảo Zalo</string>
-    <string name="action_read_noti_settings">Read Notificaiton Settings</string>
-    <string name="action_draw_overlay_settings">Draw Overlays Settings</string>
-    <string name="action_accessibility_settings">Accessibility Settings</string>
     <string name="accessibility_service_description">Accessibility Settings is required</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="enable_quick_reply_button">Bật nút trả lời nhanh</string>
     <string name="enable_accessibility_service">Bật trợ năng quick_reply</string>
     <string name="disable_accessibility_service">Tắt trợ năng quick_reply</string>
     <string name="zla_close">Đóng</string>
@@ -76,4 +68,7 @@
     <string name="zla_off">Tắt</string>
     <string name="zla_skip_please_change">Bỏ qua tin nhắn Xin, Đổi</string>
     <string name="zla_skip_7_seats">Bỏ qua cuốc dành cho xe 7 chỗ</string>
+    <string name="zla_voice_notification">Đọc thông báo cuốc</string>
+    <string name="zla_quick_reply_button">Nút trả lời nhanh trong Zalo</string>
+    <string name="zla_open_zalo_voice_message">Mở Zalo khi có tin nhắn thoại</string>
 </resources>
